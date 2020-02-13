@@ -25,6 +25,7 @@ export const Navbar = () => {
           <Typography variant="h6" className={classes.title}>
             Todo List
           </Typography>
+          <Button color="inherit">Register</Button>
           <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
