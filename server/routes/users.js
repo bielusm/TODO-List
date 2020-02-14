@@ -1,9 +1,10 @@
 const express = require('express');
-router = express.Router();
+const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-User = require('../models/User');
+const User = require('../models/User');
+const auth = require('../middleware/auth');
 
 //@route POST api/users
 //@desc Register user
@@ -78,5 +79,19 @@ router.get(
     }
   }
 );
+
+//@route GET api/users/test
+//@desc Test JWT authentication
+//@access Private
+router.get('/test', auth, async (req, res) => {
+  try {
+    console.log(req.id);
+    const user = await User.findById(req.id, '-password');
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ error: 'Server Error' });
+  }
+});
 
 module.exports = router;
