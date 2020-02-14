@@ -41,8 +41,40 @@ router.post(
       //Send Token to user
       res.status(200).json({ token });
     } catch (error) {
-      return res.status(400).json({ error: 'Server Error' });
       console.error(error);
+      return res.status(400).json({ error: 'Server Error' });
+    }
+  }
+);
+
+//@route GET api/users/login
+//@desc Login user
+//@access Public
+router.get(
+  '/login',
+  check('email').isEmail(),
+  check('password').notEmpty(),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+
+    const { email, password } = req.body;
+
+    try {
+      //Get user if it exists
+      const user = await User.findOne({ email });
+      if (!user) return res.status(400).json({ error: 'User does not exist' });
+
+      //Construct JWT Token for ID
+      payload = { id: user._id };
+      const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+      //Send Token to user
+      res.status(200).json({ token });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).json({ error: 'Server Error' });
     }
   }
 );
