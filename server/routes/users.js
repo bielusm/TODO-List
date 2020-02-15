@@ -67,6 +67,12 @@ router.get(
       const user = await User.findOne({ email });
       if (!user) return res.status(400).json({ error: 'User does not exist' });
 
+      const match = await bcrypt.compare(password, user.password);
+      if (!match)
+        return res
+          .status(401)
+          .json({ error: 'Username or password is incorrect' });
+
       //Construct JWT Token for ID
       payload = { id: user._id };
       const token = jwt.sign(payload, process.env.JWT_SECRET);

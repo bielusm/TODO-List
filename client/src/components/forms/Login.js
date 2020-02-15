@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
+import { login } from '../../actions/auth';
 
 const Login = props => {
   const [formData, setFormData] = useState({
@@ -16,17 +17,22 @@ const Login = props => {
     password: ''
   });
 
+  const { email, password } = formData;
+
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const { email, password } = formData;
+  const onSubmit = e => {
+    e.preventDefault();
+    login(formData);
+  };
 
   return (
     <Card>
       <CardHeader tag="h4">Login</CardHeader>
       <CardBody>
-        <Form>
+        <Form onSubmit={e => onSubmit(e)}>
           <FormGroup>
             <Label for="email">Email</Label>
             <Input
