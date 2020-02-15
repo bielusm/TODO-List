@@ -5,7 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 export const TopNav = props => {
   return (
     <>
-      <Navbar>
+      <Navbar color="light">
         <NavbarBrand>TODO List</NavbarBrand>
         <Nav>
           <NavItem>
