@@ -4,9 +4,9 @@ import { ADD_ALERT, REMOVE_ALERT } from '../actions/types';
 
 const { dispatch } = store;
 
-export const setAlert = (message, type) => {
+export const setAlert = (message, color) => {
   const id = uuid();
-  const payload = { id, message, type };
+  const payload = { id, message, color };
   dispatch({ type: ADD_ALERT, payload });
 
   setTimeout(() => {

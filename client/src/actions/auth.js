@@ -9,7 +9,7 @@ export const login = async ({ formData }) => {
   try {
     const res = await axios.get('/api/user/login', { ...formData });
   } catch (error) {
-    setAlert('my bad alert', 'failure');
+    setAlert('my bad alert', 'danger');
     console.error(error);
   }
 };
