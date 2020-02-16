@@ -14,12 +14,12 @@ router.post(
   check('email').isEmail(),
   check('password').notEmpty(),
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ errors: errors.array() });
-
-    const { email, password } = req.body;
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
+      const { email, password } = req.body;
       //Check if user exists
       const user = await User.findOne({ email });
       if (user)
@@ -36,6 +36,7 @@ router.post(
         email,
         hash
       });
+
       newUser.save();
 
       //Construct JWT Token for ID
@@ -59,12 +60,13 @@ router.post(
   check('email', 'Email is invalid').isEmail(),
   check('password', 'Password is required').notEmpty(),
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ errors: errors.array() });
-
-    const { email, password } = req.body;
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
+      const { email, password } = req.body;
+
       //Get user if it exists
       const user = await User.findOne({ email });
       if (!user)
@@ -72,7 +74,7 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: 'User does not exist' }] });
 
-      const match = await bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(password, user.hash);
       if (!match)
         return res
           .status(401)

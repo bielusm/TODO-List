@@ -6,11 +6,13 @@ export const login = data => async dispatch => {
     const body = JSON.stringify(data);
     const config = { headers: { 'content-type': 'application/json' } };
     const res = await axios.post('/api/users/login', body, config);
-    return res.status(200).res.json(res);
+    return res.data;
   } catch (error) {
-    error.response.data.errors.forEach(error => {
-      dispatch(setAlert(error.msg, 'danger'));
-    });
+    if (error.response) {
+      error.response.data.errors.forEach(error => {
+        dispatch(setAlert(error.msg, 'danger'));
+      });
+    } else console.error(error);
   }
 };
 
@@ -19,10 +21,12 @@ export const register = data => async dispatch => {
     const body = JSON.stringify(data);
     const config = { headers: { 'content-type': 'application/json' } };
     const res = await axios.post('/api/users', body, config);
-    return res.status(200).res.json(res);
+    return res.data;
   } catch (error) {
-    error.response.data.errors.forEach(error => {
-      dispatch(setAlert(error.msg, 'danger'));
-    });
+    if (error.response) {
+      error.response.data.errors.forEach(error => {
+        dispatch(setAlert(error.msg, 'danger'));
+      });
+    } else console.error(error);
   }
 };
