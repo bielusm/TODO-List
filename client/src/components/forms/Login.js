@@ -31,8 +31,7 @@ const Login = ({ authenticated, login }) => {
     login(formData);
   };
 
-  if (authenticated)
-    return (<Redirect to="/dashboard" />)
+  if (authenticated) return <Redirect to="/dashboard" />;
 
   return (
     <Card>
@@ -65,11 +64,12 @@ const Login = ({ authenticated, login }) => {
 };
 
 const mapStateToProps = state => ({
-  authenticated: state.user.token
-})
+  authenticated: state.user.authenticated
+});
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, { login })(Login);

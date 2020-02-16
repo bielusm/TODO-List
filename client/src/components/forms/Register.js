@@ -34,8 +34,7 @@ const Register = ({ authenticated, register, setAlert }) => {
     else setAlert('Passwords must match', 'danger');
   };
 
-  if (authenticated)
-    return (<Redirect to="/dashboard" />)
+  if (authenticated) return <Redirect to="/dashboard" />;
 
   return (
     <>
@@ -79,12 +78,13 @@ const Register = ({ authenticated, register, setAlert }) => {
 };
 
 const mapStateToProps = state => ({
-  authenticated: state.user.token
-})
+  authenticated: state.user.authenticated
+});
 
 Register.propTypes = {
   register: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, { register, setAlert })(Register);
