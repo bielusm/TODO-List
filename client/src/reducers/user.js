@@ -1,7 +1,8 @@
 import { SET_TOKEN } from '../actions/types';
 
 const initialState = {
-  token: null
+  token: null,
+  authenticated: false
 };
 
 const user = (state = initialState, action) => {
@@ -10,7 +11,8 @@ const user = (state = initialState, action) => {
     case SET_TOKEN:
       return {
         ...state,
-        token: payload
+        token: payload,
+        authenticated: true
       };
     default:
       return state;
