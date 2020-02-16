@@ -8,6 +8,8 @@ import TopNav from './components/layout/TopNav';
 import Login from './components/forms/Login';
 import Register from './components/forms/Register';
 import Alerts from './components/layout/Alerts';
+import Dashboard from './components/layout/Dashboard';
+import PrivateRoute from './components/routes/PrivateRoute';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from 'reactstrap';
@@ -25,6 +27,7 @@ const jsx = (
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
         </Switch>
       </Container>
     </Router>

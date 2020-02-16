@@ -9,6 +9,11 @@ export const TopNav = props => {
         <NavbarBrand>TODO List</NavbarBrand>
         <Nav>
           <NavItem>
+            <NavLink tag={Link} to="/dashboard">
+              Dashboard
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink tag={Link} to="/register">
               Register
             </NavLink>
