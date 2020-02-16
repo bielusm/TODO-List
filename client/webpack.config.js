@@ -29,7 +29,14 @@ module.exports = env => {
       contentBase: path.join(__dirname, 'docs'),
       publicPath: '/assets/',
       port: 3000,
-      historyApiFallback: true
+      historyApiFallback: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',
+          secure: false,
+          changeOrigin: true
+        }
+      }
     }
   };
 };

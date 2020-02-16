@@ -1,15 +1,15 @@
 import axios from 'axios';
 import store from '../store';
-const { dispatch } = store;
 import { setAlert } from './alert';
 
-let num = 0;
-
-export const login = async ({ formData }) => {
+export const login = data => async dispatch => {
   try {
-    const res = await axios.get('/api/user/login', { ...formData });
+    const body = JSON.stringify(data);
+    const config = { headers: { 'content-type': 'application/json' } };
+    const res = await axios.post('/api/users/login', body, config);
   } catch (error) {
-    setAlert('my bad alert', 'danger');
-    console.error(error);
+    error.response.data.errors.forEach(error => {
+      setAlert(error.msg, 'danger');
+    });
   }
 };
