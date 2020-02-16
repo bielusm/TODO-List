@@ -17,7 +17,7 @@ const Dashboard = props => {
           <td>Buy Groceries</td>
           <td>
             <Button color="link">
-              <i class="fas fa-check fa-lg"></i>
+              <i className="fas fa-check fa-lg"></i>
             </Button>
           </td>
           <td>
@@ -28,7 +28,7 @@ const Dashboard = props => {
           <td>Get gas</td>
           <td>
             <Button color="link">
-              <i class="fas fa-check fa-lg"></i>
+              <i className="fas fa-check fa-lg"></i>
             </Button>
           </td>
           <td>
