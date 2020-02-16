@@ -9,6 +9,7 @@ export const login = data => async dispatch => {
     const body = JSON.stringify(data);
     const config = { headers: { 'content-type': 'application/json' } };
     const res = await axios.post('/api/users/login', body, config);
+    window.localStorage.setItem('token', res.data.token);
     dispatch(setToken(res.data.token));
   } catch (error) {
     if (error.response) {
@@ -24,6 +25,7 @@ export const register = data => async dispatch => {
     const body = JSON.stringify(data);
     const config = { headers: { 'content-type': 'application/json' } };
     const res = await axios.post('/api/users', body, config);
+    window.localStorage.setItem('token', res.data.token);
     dispatch(setToken(res.data.token));
   } catch (error) {
     if (error.response) {

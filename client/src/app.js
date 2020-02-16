@@ -15,8 +15,13 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
+import { setToken } from './actions/auth'
 
 const store = configureStore;
+
+const token = window.localStorage.getItem('token');
+if (token)
+  store.dispatch(setToken(token));
 
 const jsx = (
   <Provider store={store}>

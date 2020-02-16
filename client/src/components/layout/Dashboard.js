@@ -1,10 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Table } from 'reactstrap'
+
 
 const Dashboard = props => {
-  return <div>Dashboard</div>;
-};
+  return <Table>
+    <tr><td>
+      Buy Groceries
+    </td></tr>
+    <tr><td>Get gas</td></tr>
 
-Dashboard.propTypes = {};
+  </Table>;
+};
 
 export default Dashboard;
