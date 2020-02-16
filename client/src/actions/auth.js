@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { setAlert } from './alert';
+import { SET_TOKEN } from './types';
+
+export const setToken = token => ({ type: SET_TOKEN, payload: token });
 
 export const login = data => async dispatch => {
   try {
     const body = JSON.stringify(data);
     const config = { headers: { 'content-type': 'application/json' } };
     const res = await axios.post('/api/users/login', body, config);
-    return res.data;
+    dispatch(setToken(res.data.token));
   } catch (error) {
     if (error.response) {
       error.response.data.errors.forEach(error => {
@@ -21,7 +24,7 @@ export const register = data => async dispatch => {
     const body = JSON.stringify(data);
     const config = { headers: { 'content-type': 'application/json' } };
     const res = await axios.post('/api/users', body, config);
-    return res.data;
+    dispatch(setToken(res.data.token));
   } catch (error) {
     if (error.response) {
       error.response.data.errors.forEach(error => {
