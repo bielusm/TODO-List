@@ -11,9 +11,10 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 import { login } from '../../actions/auth';
 
-const Login = ({ login }) => {
+const Login = ({ authenticated, login }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -29,6 +30,9 @@ const Login = ({ login }) => {
     e.preventDefault();
     login(formData);
   };
+
+  if (authenticated)
+    return (<Redirect to="/dashboard" />)
 
   return (
     <Card>
@@ -60,8 +64,12 @@ const Login = ({ login }) => {
   );
 };
 
+const mapStateToProps = state => ({
+  authenticated: state.user.token
+})
+
 Login.propTypes = {
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
 };
 
-export default connect(null, { login })(Login);
+export default connect(mapStateToProps, { login })(Login);

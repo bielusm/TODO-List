@@ -10,11 +10,12 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 import { register } from '../../actions/auth';
 import { setAlert } from '../../actions/alert';
 import { connect } from 'react-redux';
 
-const Register = ({ register, setAlert }) => {
+const Register = ({ authenticated, register, setAlert }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -33,10 +34,13 @@ const Register = ({ register, setAlert }) => {
     else setAlert('Passwords must match', 'danger');
   };
 
+  if (authenticated)
+    return (<Redirect to="/dashboard" />)
+
   return (
     <>
       <Card>
-        <CardHeader tag="h4">Login</CardHeader>
+        <CardHeader tag="h4">Register</CardHeader>
         <CardBody>
           <Form onSubmit={e => onSubmit(e)}>
             <FormGroup>
@@ -74,9 +78,13 @@ const Register = ({ register, setAlert }) => {
   );
 };
 
+const mapStateToProps = state => ({
+  authenticated: state.user.token
+})
+
 Register.propTypes = {
   register: PropTypes.func.isRequired,
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
 };
 
-export default connect(null, { register, setAlert })(Register);
+export default connect(mapStateToProps, { register, setAlert })(Register);
