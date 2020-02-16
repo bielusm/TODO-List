@@ -22,7 +22,10 @@ router.post(
     try {
       //Check if user exists
       const user = await User.findOne({ email });
-      if (user) return res.status(400).json({ error: 'User already exists' });
+      if (user)
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User already exists' }] });
 
       // Hash password
       const SALT_ROUNDS = 10;
@@ -43,35 +46,37 @@ router.post(
       res.status(200).json({ token });
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ error: 'Server Error' });
+      return res.status(400).json({ errors: [{ msg: 'Server Error' }] });
     }
   }
 );
 
-//@route GET api/users/login
+//@route POST api/users/login
 //@desc Login user
 //@access Public
-router.get(
+router.post(
   '/login',
-  check('email').isEmail(),
-  check('password').notEmpty(),
+  check('email', 'Email is invalid').isEmail(),
+  check('password', 'Password is required').notEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array() });
 
     const { email, password } = req.body;
-
     try {
       //Get user if it exists
       const user = await User.findOne({ email });
-      if (!user) return res.status(400).json({ error: 'User does not exist' });
+      if (!user)
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User does not exist' }] });
 
       const match = await bcrypt.compare(password, user.password);
       if (!match)
         return res
           .status(401)
-          .json({ error: 'Username or password is incorrect' });
+          .json({ errors: [{ msg: 'Username or password is incorrect' }] });
 
       //Construct JWT Token for ID
       payload = { id: user._id };
@@ -81,7 +86,7 @@ router.get(
       res.status(200).json({ token });
     } catch (error) {
       console.error(error);
-      return res.status(400).json({ error: 'Server Error' });
+      return res.status(400).json({ errors: [{ msg: 'Server Error' }] });
     }
   }
 );
