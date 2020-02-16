@@ -21,7 +21,7 @@ const Dashboard = props => {
             </Button>
           </td>
           <td>
-            <Moment format="YYYY/MM/DD">09/02/2019</Moment>
+            <Moment format="YYYY/MM/DD">1976-04-19T12:59-0500</Moment>
           </td>
         </tr>
         <tr>
@@ -32,7 +32,7 @@ const Dashboard = props => {
             </Button>
           </td>
           <td>
-            <Moment format="YYYY/MM/DD">09/02/2019</Moment>
+            <Moment format="YYYY/MM/DD">1976-04-19T12:59-0500</Moment>
           </td>
         </tr>
       </tbody>
