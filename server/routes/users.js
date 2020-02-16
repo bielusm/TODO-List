@@ -34,7 +34,7 @@ router.post(
       //Add User to Database
       const newUser = new User({
         email,
-        password
+        hash
       });
       newUser.save();
 
