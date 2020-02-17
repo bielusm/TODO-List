@@ -9,6 +9,11 @@ export const TopNav = ({ authenticated, logout }) => {
   const authLinks = (
     <>
       <NavItem>
+        <NavLink tag={Link} to="/add-todo">
+          Add Todo
+        </NavLink>
+      </NavItem>
+      <NavItem>
         <NavLink tag={Link} to="/dashboard">
           Dashboard
         </NavLink>
