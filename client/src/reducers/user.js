@@ -1,4 +1,4 @@
-import { SET_TOKEN } from '../actions/types';
+import { SET_TOKEN, LOGOUT } from '../actions/types';
 
 const initialState = {
   token: null,
@@ -13,6 +13,12 @@ const user = (state = initialState, action) => {
         ...state,
         token: payload,
         authenticated: true
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        token: null,
+        authenticated: false
       };
     default:
       return state;

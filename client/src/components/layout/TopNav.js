@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Navbar, NavbarBrand, NavItem, NavLink, Nav, Button } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { logout } from '../../actions/auth';
 
-export const TopNav = ({ authenticated }) => {
+export const TopNav = ({ authenticated, logout }) => {
   const authLinks = (
     <>
       <NavItem>
@@ -13,7 +14,9 @@ export const TopNav = ({ authenticated }) => {
         </NavLink>
       </NavItem>
       <NavItem>
-        <NavLink to="/logout">Logout</NavLink>
+        <Button color="danger" onClick={logout}>
+          Logout <i className="fas fa-sign-out-alt"></i>
+        </Button>
       </NavItem>
     </>
   );
@@ -46,7 +49,8 @@ TopNav.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  authenticated: state.user.authenticated
+  authenticated: state.user.authenticated,
+  logout: PropTypes.func.isRequired
 });
 
-export default connect(mapStateToProps)(withRouter(TopNav));
+export default connect(mapStateToProps, { logout })(withRouter(TopNav));
