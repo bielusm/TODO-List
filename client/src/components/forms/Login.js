@@ -44,6 +44,7 @@ const Login = ({ authenticated, login }) => {
               type="email"
               name="email"
               value={email}
+              required
               onChange={e => onChange(e)}
             ></Input>
           </FormGroup>
@@ -53,6 +54,7 @@ const Login = ({ authenticated, login }) => {
               type="password"
               name="password"
               value={password}
+              required
               onChange={e => onChange(e)}
             ></Input>
           </FormGroup>

@@ -47,6 +47,7 @@ const Register = ({ authenticated, register, setAlert }) => {
               <Input
                 type="email"
                 name="email"
+                required
                 value={email}
                 onChange={e => onChange(e)}
               ></Input>
@@ -56,6 +57,7 @@ const Register = ({ authenticated, register, setAlert }) => {
               <Input
                 type="password"
                 name="password"
+                required
                 value={password}
                 onChange={e => onChange(e)}
               ></Input>
@@ -65,6 +67,7 @@ const Register = ({ authenticated, register, setAlert }) => {
               <Input
                 type="password"
                 name="password2"
+                required
                 value={password2}
                 onChange={e => onChange(e)}
               ></Input>
