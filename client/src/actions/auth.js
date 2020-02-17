@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { SET_TOKEN } from './types';
+import { SET_TOKEN, LOGOUT } from './types';
 
 export const setToken = token => ({ type: SET_TOKEN, payload: token });
+
+export const logout = () => dispatch => {
+  dispatch({ type: LOGOUT });
+  window.localStorage.removeItem('token');
+};
 
 export const login = data => async dispatch => {
   try {
