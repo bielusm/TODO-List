@@ -1,13 +1,11 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+const config = require('config');
 
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(config.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })

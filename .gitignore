@@ -2,3 +2,5 @@ node_modules/
 client/docs/assets/bundle.js
 client/docs/assets/bundle.js.map
 server/.env
+server/config/default.json
+server/config/test.json

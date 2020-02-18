@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
+const config = require('config');
 
 //@route POST api/users
 //@desc Register user
@@ -41,7 +42,7 @@ router.post(
 
       //Construct JWT Token for ID
       payload = { id: newUser._id };
-      const token = jwt.sign(payload, process.env.JWT_SECRET);
+      const token = jwt.sign(payload, config.JWT_SECRET);
 
       //Send Token to user
       res.status(200).json({ token });
@@ -82,7 +83,7 @@ router.post(
 
       //Construct JWT Token for ID
       payload = { id: user._id };
-      const token = jwt.sign(payload, process.env.JWT_SECRET);
+      const token = jwt.sign(payload, config.JWT_SECRET);
 
       //Send Token to user
       res.status(200).json({ token });
