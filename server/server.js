@@ -23,6 +23,7 @@ app.use(express.json());
 
 //Define Routes
 app.use('/api/users', require('./routes/users'));
+app.use('/api/todo', require('./routes/todo'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
