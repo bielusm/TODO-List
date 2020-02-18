@@ -68,4 +68,4 @@ AddTodo.propTypes = {
   authenticated: PropTypes.bool.isRequired
 };
 
-export default connect(mapStateToProps, { addTodo })(AddTodo);
+export default connect(mapStateToProps, {})(AddTodo);
