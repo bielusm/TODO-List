@@ -12,8 +12,8 @@ const config = require('config');
 //@access Public
 router.post(
   '/',
-  check('email').isEmail(),
-  check('password').notEmpty(),
+  check('email', 'Email is invalid').isEmail(),
+  check('password', 'Password is required').notEmpty(),
   async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -38,7 +38,7 @@ router.post(
         hash
       });
 
-      newUser.save();
+      await newUser.save();
 
       //Construct JWT Token for ID
       payload = { id: newUser._id };

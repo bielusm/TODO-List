@@ -7,6 +7,7 @@
     "start": "node server",
     "server": "nodemon server",
     "client": "cd ../client && yarn start",
+    "test": "mocha --exit",
     "dev": "concurrently \"yarn server\" \"yarn client\""
   },
   "dependencies": {
