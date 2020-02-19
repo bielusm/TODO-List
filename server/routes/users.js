@@ -37,7 +37,7 @@ router.post(
         hash
       });
 
-      newUser.save();
+      await newUser.save();
 
       //Construct JWT Token for ID
       payload = { id: newUser._id };
