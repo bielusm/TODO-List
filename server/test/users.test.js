@@ -33,6 +33,10 @@ describe('Users', function() {
     await User.deleteMany({});
   });
 
+  this.afterAll(async function() {
+    await User.deleteMany({});
+  });
+
   describe('POST api/users', function() {
     it('Should register user', async function() {
       expect(await User.countDocuments()).to.equal(0);
@@ -42,7 +46,6 @@ describe('Users', function() {
         .send(testUser);
       expect(res).to.have.status(200).to.be.json;
       expect(res.body.token).to.exist;
-
       expect(await User.countDocuments()).to.equal(1);
       user = await User.findOne({ email: testUser.email });
       expect(user.email).to.equal(testUser.email);
