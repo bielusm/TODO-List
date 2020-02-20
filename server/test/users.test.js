@@ -64,13 +64,15 @@ describe('Users', function() {
       expect(errors).to.be.a.lengthOf(1);
       expect(errors[0].msg).to.equal('User already exists');
     });
+
     it('Should not allow bad input', async function() {
       let res = await chai.request(server).post('/api/users');
       expect(res).to.have.status(400).to.be.json;
       let errors = res.body.errors;
+
       expect(errors).to.be.a.lengthOf(2);
-      expect(errors[0].msg).to.equal('Email is invalid');
-      expect(errors[1].msg).to.equal('Password is required');
+      expect(errors[0].msg).to.equal('email is required');
+      expect(errors[1].msg).to.equal('password is required');
 
       res = await chai
         .request(server)
@@ -82,8 +84,8 @@ describe('Users', function() {
       expect(res).to.have.status(400).to.be.json;
       errors = res.body.errors;
       expect(errors).to.be.a.lengthOf(2);
-      expect(errors[0].msg).to.equal('Email is invalid');
-      expect(errors[1].msg).to.equal('Password is required');
+      expect(errors[0].msg).to.equal('email is required');
+      expect(errors[1].msg).to.equal('password is required');
     });
   });
 
@@ -146,13 +148,13 @@ describe('Users', function() {
       res = await chai
         .request(server)
         .post('/api/users/login')
-        .send({ email: 'a' });
+        .send({ email: null, password: false });
 
       expect(res).to.have.status(400).to.be.json;
       let errors = res.body.errors;
       expect(errors).to.be.a.lengthOf(2);
-      expect(errors[0].msg).to.equal('Email is invalid');
-      expect(errors[1].msg).to.equal('Password is required');
+      expect(errors[0].msg).to.equal('email is required');
+      expect(errors[1].msg).to.equal('password is required');
     });
   });
 });

@@ -7,18 +7,28 @@ const User = require('../models/User');
 const auth = require('../middleware/auth');
 const config = require('config');
 
+const errorFormater = ({ param }) => {
+  return { msg: `${param} is required` };
+};
+
 //@route POST api/users
 //@desc Register user
 //@access Public
 router.post(
   '/',
-  check('email', 'Email is invalid').isEmail(),
-  check('password', 'Password is required').notEmpty(),
+  check('email')
+    .isEmail()
+    .normalizeEmail(),
+  check('password')
+    .isString()
+    .isLength({ min: 1 }),
   async (req, res) => {
     try {
-      const errors = validationResult(req);
+      const errors = validationResult(req).formatWith(errorFormater);
       if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+        return res
+          .status(400)
+          .json({ errors: errors.array({ onlyFirstError: true }) });
 
       const { email, password } = req.body;
       //Check if user exists
@@ -58,13 +68,19 @@ router.post(
 //@access Public
 router.post(
   '/login',
-  check('email', 'Email is invalid').isEmail(),
-  check('password', 'Password is required').notEmpty(),
+  check('email')
+    .isEmail()
+    .normalizeEmail(),
+  check('password')
+    .isString()
+    .isLength({ min: 1 }),
   async (req, res) => {
     try {
-      const errors = validationResult(req);
+      const errors = validationResult(req).formatWith(errorFormater);
       if (!errors.isEmpty())
-        return res.status(400).json({ errors: errors.array() });
+        return res
+          .status(400)
+          .json({ errors: errors.array({ onlyFirstError: true }) });
 
       const { email, password } = req.body;
 
