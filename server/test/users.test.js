@@ -119,5 +119,40 @@ describe('Users', function() {
       expect(errors).to.be.a.lengthOf(1);
       expect(errors[0].msg).to.equal('Username or password is incorrect');
     });
+
+    it('Should not allow invalid email', async function() {
+      let res = await chai
+        .request(server)
+        .post('/api/users')
+        .send(testUser);
+
+      res = await chai
+        .request(server)
+        .post('/api/users/login')
+        .send({ email: 'fakeemail@fake.com', password: '123' });
+
+      expect(res).to.have.status(400).to.be.json;
+      errors = res.body.errors;
+      expect(errors).to.be.a.lengthOf(1);
+      expect(errors[0].msg).to.equal('User does not exist');
+    });
+
+    it('Should not allow invalid body', async function() {
+      let res = await chai
+        .request(server)
+        .post('/api/users')
+        .send(testUser);
+
+      res = await chai
+        .request(server)
+        .post('/api/users/login')
+        .send({ email: 'a' });
+
+      expect(res).to.have.status(400).to.be.json;
+      let errors = res.body.errors;
+      expect(errors).to.be.a.lengthOf(2);
+      expect(errors[0].msg).to.equal('Email is invalid');
+      expect(errors[1].msg).to.equal('Password is required');
+    });
   });
 });
