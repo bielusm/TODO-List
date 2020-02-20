@@ -94,18 +94,4 @@ router.post(
   }
 );
 
-//@route GET api/users/test
-//@desc Test JWT authentication
-//@access Private
-router.get('/test', auth, async (req, res) => {
-  try {
-    console.log(req.id);
-    const user = await User.findById(req.id, '-password');
-    return res.status(200).json(user);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ error: 'Server Error' });
-  }
-});
-
 module.exports = router;
