@@ -6,15 +6,19 @@ const auth = (req, res, next) => {
   try {
     //Get token from header
     const token = req.headers['x-auth-token'];
-    if (!token) return res.status(400).json({ error: 'No Token In Header' });
+    if (!token)
+      return res.status(400).json({ errors: [{ msg: 'No Token In Header' }] });
 
     //Verify and decrypt token
     const decoded = jwt.verify(token, config.JWT_SECRET);
     req.id = decoded.id;
     next();
   } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError)
+      return res.status(401).json({ errors: [{ msg: 'Not authorized' }] });
+
     console.error(error);
-    return res.status(401).json({ error: 'Not authorized' });
+    return res.status(400).json({ errors: [{ msg: 'Server Error' }] });
   }
 };
 
