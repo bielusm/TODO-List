@@ -10,12 +10,14 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 
+const sinon = require('sinon');
+
 chai.use(chaiHttp);
 const testUser = { email: 'test@test.com', password: 'password' };
 let token = '';
 describe('Todos', function() {
   describe('POST api/todo', function() {
-    this.beforeAll(async function() {
+    before(async function() {
       this.timeout(5000);
       try {
         await mongoose.connect(config.MONGO_URI, {
@@ -27,9 +29,7 @@ describe('Todos', function() {
           .post('/api/users')
           .send(testUser);
         token = res.body.token;
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     });
 
     beforeEach(async function() {
@@ -50,8 +50,29 @@ describe('Todos', function() {
         .send({ name: 'test', description: 'test description' });
 
       expect(res).to.have.status(200);
-      console.log(res);
       expect(res.text).to.equal('Todo added');
     });
+  });
+
+  it('Should not allow invalid JWT token', async function() {
+    //No token
+    let res = await chai
+      .request(server)
+      .post('/api/todo')
+      .send({ name: 'test', description: 'test description' });
+    expect(res).to.have.status(400);
+    let errors = res.body.errors;
+    expect(errors).to.be.length(1);
+    expect(errors[0].msg).to.equal('No Token In Header');
+
+    res = await chai
+      .request(server)
+      .post('/api/todo')
+      .set('x-auth-token', 'adhwdawdad')
+      .send({ name: 'test', description: 'test description' });
+    expect(res).to.have.status(401);
+    errors = res.body.errors;
+    expect(errors).to.be.length(1);
+    expect(errors[0].msg).to.equal('Not authorized');
   });
 });
