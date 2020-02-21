@@ -10,8 +10,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 
-const sinon = require('sinon');
-
 chai.use(chaiHttp);
 const testUser = { email: 'test@test.com', password: 'password' };
 let token = '';
@@ -20,10 +18,6 @@ describe('Todos', function() {
     before(async function() {
       this.timeout(5000);
       try {
-        await mongoose.connect(config.MONGO_URI, {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-        });
         const res = await chai
           .request(server)
           .post('/api/users')

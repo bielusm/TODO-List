@@ -15,18 +15,7 @@ chai.use(chaiHttp);
 const testUser = { email: 'test@test.com', password: 'password' };
 
 describe('Users', function() {
-  this.beforeAll(async function() {
-    mongoose
-      .connect(config.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      .then(() => console.log('Test Connected to MongoDB'))
-      .catch(error => {
-        console.error(error);
-        process.exit(1);
-      });
-  });
+  this.beforeAll(async function() {});
 
   beforeEach(async function() {
     this.timeout(5000);
