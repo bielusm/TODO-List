@@ -4,50 +4,60 @@ const config = require('config');
 
 const mongoose = require('mongoose');
 const User = require('../models/User');
-const server = require('../server');
+let server = require('../server');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 
+const request = require('supertest');
+
 chai.use(chaiHttp);
 
 const testUser = { email: 'test@test.com', password: 'password' };
 
-describe('Users', function() {
-  this.beforeAll(async function() {});
+describe('Users', () => {
+  beforeAll(async function() {
+    await mongoose
+      .connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      .catch(error => {
+        console.error(error);
+        process.exit(1);
+      });
+  });
 
-  beforeEach(async function() {
-    this.timeout(5000);
+  beforeEach(async () => {
     await User.deleteMany({});
   });
 
-  this.afterAll(async function() {
+  afterAll(async function() {
+    await mongoose.connection.close();
     await User.deleteMany({});
   });
 
-  describe('POST api/users', function() {
-    it('Should register user', async function() {
+  describe('POST api/users', () => {
+    test('Should register user', async () => {
       expect(await User.countDocuments()).to.equal(0);
-      const res = await chai
-        .request(server)
+      const res = await request(server)
         .post('/api/users')
         .send(testUser);
       expect(res).to.have.status(200).to.be.json;
       expect(res.body.token).to.exist;
       expect(await User.countDocuments()).to.equal(1);
       user = await User.findOne({ email: testUser.email });
+      expect(user);
       expect(user.email).to.equal(testUser.email);
       expect(user.hash).to.exist;
     });
 
-    it('Should not allow duplicate user', async function() {
-      let res = await chai
-        .request(server)
+    test('Should not allow duplicate user', async () => {
+      let res = await request(server)
         .post('/api/users')
         .send(testUser);
-      res = await chai
-        .request(server)
+      res = await request(server)
         .post('/api/users')
         .send(testUser);
 
@@ -57,8 +67,8 @@ describe('Users', function() {
       expect(errors[0].msg).to.equal('User already exists');
     });
 
-    it('Should not allow bad input', async function() {
-      let res = await chai.request(server).post('/api/users');
+    test('Should not allow bad input', async () => {
+      let res = await request(server).post('/api/users');
       expect(res).to.have.status(400).to.be.json;
       let errors = res.body.errors;
 
@@ -66,8 +76,7 @@ describe('Users', function() {
       expect(errors[0].msg).to.equal('email is required');
       expect(errors[1].msg).to.equal('password is required');
 
-      res = await chai
-        .request(server)
+      res = await request(server)
         .post('/api/users')
         .send({
           email: 'aa',
@@ -81,15 +90,13 @@ describe('Users', function() {
     });
   });
 
-  describe('/api/login', function() {
-    it('Should login user', async function() {
-      let res = await chai
-        .request(server)
+  describe('/api/login', () => {
+    test('Should login user', async () => {
+      let res = await request(server)
         .post('/api/users')
         .send(testUser);
 
-      res = await chai
-        .request(server)
+      res = await request(server)
         .post('/api/users/login')
         .send(testUser);
 
@@ -97,14 +104,12 @@ describe('Users', function() {
       expect(res.body.token).to.exist;
     });
 
-    it('Should not allow wrong password', async function() {
-      let res = await chai
-        .request(server)
+    test('Should not allow wrong password', async () => {
+      let res = await request(server)
         .post('/api/users')
         .send(testUser);
 
-      res = await chai
-        .request(server)
+      res = await request(server)
         .post('/api/users/login')
         .send({ email: testUser.email, password: '123' });
 
@@ -114,14 +119,12 @@ describe('Users', function() {
       expect(errors[0].msg).to.equal('Username or password is incorrect');
     });
 
-    it('Should not allow invalid email', async function() {
-      let res = await chai
-        .request(server)
+    test('Should not allow invalid email', async () => {
+      let res = await request(server)
         .post('/api/users')
         .send(testUser);
 
-      res = await chai
-        .request(server)
+      res = await request(server)
         .post('/api/users/login')
         .send({ email: 'fakeemail@fake.com', password: '123' });
 
@@ -131,14 +134,12 @@ describe('Users', function() {
       expect(errors[0].msg).to.equal('User does not exist');
     });
 
-    it('Should not allow invalid body', async function() {
-      let res = await chai
-        .request(server)
+    test('Should not allow invalid body', async () => {
+      let res = await request(server)
         .post('/api/users')
         .send(testUser);
 
-      res = await chai
-        .request(server)
+      res = await request(server)
         .post('/api/users/login')
         .send({ email: null, password: false });
 
