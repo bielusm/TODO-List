@@ -6,10 +6,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 const config = require('config');
-
-const errorFormater = ({ param }) => {
-  return { msg: `${param} is required` };
-};
+const errorFormater = require('./errorFormater');
 
 //@route POST api/users
 //@desc Register user
