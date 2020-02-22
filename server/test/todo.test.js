@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Todo = require('../models/Todo');
 
-const server = require('../server');
+const server = require('../app');
 const request = require('supertest');
 
 const testUser = { email: 'test@test.com', password: 'password' };

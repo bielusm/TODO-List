@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 const User = require('../models/User');
-let server = require('../server');
+let server = require('../app');
 const request = require('supertest');
 const testUser = { email: 'test@test.com', password: 'password' };
 
