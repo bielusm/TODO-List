@@ -69,4 +69,14 @@ describe('Todos', () => {
     expect(errors.length).toEqual(1);
     expect(errors[0].msg).toEqual('Not authorized');
   });
+
+  test('Should not allow no name', async () => {
+    let res = await request(server)
+      .post('/api/todo')
+      .set('x-auth-token', token)
+      .expect(400);
+    const errors = res.body.errors;
+    expect(errors.length).toEqual(1);
+    expect(errors[0].msg).toEqual('name is required');
+  });
 });
