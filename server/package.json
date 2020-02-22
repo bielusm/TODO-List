@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand --config=tests/jest.config.js"
   },
   "dependencies": {
     "bcrypt": "^3.0.8",

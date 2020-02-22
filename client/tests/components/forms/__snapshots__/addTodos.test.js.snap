@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot add todo form 1`] = `ShallowWrapper {}`;
+
+exports[`snapshot add todo form 2`] = `ShallowWrapper {}`;

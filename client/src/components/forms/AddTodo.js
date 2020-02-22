@@ -12,7 +12,7 @@ import {
   CardBody
 } from 'reactstrap';
 
-const AddTodo = ({ authenticated, AddTodo }) => {
+export const AddTodo = ({ authenticated, AddTodo }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: ''
