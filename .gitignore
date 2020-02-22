@@ -5,3 +5,6 @@ server/.env
 server/config/default.json
 server/config/test.json
 server/coverage
+config/default.json
+config/test.json
+mongodb-binaries/
