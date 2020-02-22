@@ -22,6 +22,7 @@ describe('Todos', () => {
         console.error(error);
         process.exit(1);
       });
+    await User.deleteMany({});
     const res = await request(server)
       .post('/api/users')
       .send(testUser);
