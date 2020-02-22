@@ -1,3 +1,15 @@
 {
-  "devDependencies": {}
+  "name": "todo",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "cd server && yarn server",
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "test": "jest --runInBand"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "jest": "^25.1.0"
+  }
 }
