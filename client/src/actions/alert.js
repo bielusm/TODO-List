@@ -2,12 +2,19 @@ import store from '../store';
 import { uuid } from 'uuidv4';
 import { ADD_ALERT, REMOVE_ALERT } from '../actions/types';
 
+export const addAlert = (id, message, color) => {
+  return { type: ADD_ALERT, id, message, color };
+};
+
+export const removeAlert = id => {
+  return { type: REMOVE_ALERT, payload: id };
+};
+
 export const setAlert = (message, color) => async dispatch => {
   const id = uuid();
-  const payload = { id, message, color };
-  dispatch({ type: ADD_ALERT, payload });
+  dispatch(addAlert(id, message, color));
 
   setTimeout(() => {
-    dispatch({ type: REMOVE_ALERT, payload: id });
+    dispatch(removeAlert);
   }, 5000);
 };
