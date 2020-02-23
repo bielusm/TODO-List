@@ -11,8 +11,9 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
+import { addTodo } from '../../actions/todo';
 
-export const AddTodo = ({ authenticated, AddTodo }) => {
+export const AddTodo = ({ addTodo }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: ''
@@ -26,7 +27,7 @@ export const AddTodo = ({ authenticated, AddTodo }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    AddTodo(formData);
+    addTodo(formData);
   };
 
   return (
@@ -42,6 +43,7 @@ export const AddTodo = ({ authenticated, AddTodo }) => {
               required
               value={name}
               onChange={e => onChange(e)}
+              className="name"
             ></Input>
           </FormGroup>
           <FormGroup>
@@ -50,6 +52,7 @@ export const AddTodo = ({ authenticated, AddTodo }) => {
               type="textarea"
               name="description"
               value={description}
+              className="description"
               onChange={e => onChange(e)}
             ></Input>
           </FormGroup>
@@ -60,12 +63,4 @@ export const AddTodo = ({ authenticated, AddTodo }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  authenticated: state.user.authenticated
-});
-
-AddTodo.propTypes = {
-  authenticated: PropTypes.bool.isRequired
-};
-
-export default connect(mapStateToProps, {})(AddTodo);
+export default connect(null, { addTodo })(AddTodo);
