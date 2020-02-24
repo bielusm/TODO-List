@@ -116,5 +116,24 @@ describe('Todos', () => {
         );
       });
     });
+    test('Should not allow invalid JWT token', async () => {
+      //No token
+      let res = await request(server)
+        .get('/api/todo')
+        .send({ name: 'test', description: 'test description' })
+        .expect(400);
+      let errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('No Token In Header');
+      //Invalid token
+      res = await request(server)
+        .get('/api/todo')
+        .set('x-auth-token', 'adhwdawdad')
+        .send({ name: 'test', description: 'test description' })
+        .expect(401);
+      errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('Not authorized');
+    });
   });
 });
