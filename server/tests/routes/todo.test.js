@@ -10,45 +10,25 @@ const request = require('supertest');
 
 const Moment = require('moment');
 
-const testTodos = [
-  { name: 'Get gas', description: 'go to gas station' },
-  { name: 'Ride bike', description: '' },
-  { name: 'Get groceries' },
-  { name: 'Study for exam', description: 'must study for exam' }
-];
-const testUser = { email: 'test@test.com', password: 'password' };
+const { seedUser } = require('../fixtures/users');
 let token = '';
+
+const {
+  seedDatabaseAndConnect,
+  clearDatabaseAndDisconnect
+} = require('../fixtures/seedDatabase');
 
 describe('Todos', () => {
   beforeAll(async () => {
-    await mongoose
-      .connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      .catch(error => {
-        console.error(error);
-        process.exit(1);
-      });
-    await User.deleteMany({});
-    const res = await request(server)
-      .post('/api/users')
-      .send(testUser);
+    await seedDatabaseAndConnect();
+    //login test user
+    res = await request(server)
+      .post('/api/users/login')
+      .send(seedUser);
     token = res.body.token;
-
-    const user = await User.findOne({ email: testUser.email });
-    const id = user._id;
-
-    testTodos.forEach(t => {
-      const todo = new Todo({ ...t, User: id, date: Moment() });
-      todo.save();
-      user.todos = [...user.todos, todo._id];
-    });
-    await user.save();
   });
   afterAll(async function() {
-    await mongoose.connection.close();
-    await User.deleteMany({});
+    await clearDatabaseAndDisconnect();
   });
 
   describe('POST api/todo', () => {

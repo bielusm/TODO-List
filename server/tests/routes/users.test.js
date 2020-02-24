@@ -2,35 +2,25 @@ process.env.NODE_ENV = 'test';
 
 const mongoose = require('mongoose');
 const User = require('../../models/User');
-let server = require('../../app');
+const server = require('../../app');
 const request = require('supertest');
-const testUser = { email: 'test@test.com', password: 'password' };
+const { testUser, seedUser } = require('../fixtures/users');
+const {
+  seedDatabaseAndConnect,
+  clearDatabaseAndDisconnect
+} = require('../fixtures/seedDatabase');
 
 describe('Users', () => {
   beforeAll(async function() {
-    await mongoose
-      .connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      .catch(error => {
-        console.error(error);
-        process.exit(1);
-      });
-  });
-
-  beforeEach(async () => {
-    await User.deleteMany({});
+    await seedDatabaseAndConnect();
   });
 
   afterAll(async function() {
-    await mongoose.connection.close();
-    await User.deleteMany({});
+    await clearDatabaseAndDisconnect();
   });
 
   describe('POST api/users', () => {
     test('Should register user', async () => {
-      expect(await User.countDocuments()).toEqual(0);
       const res = await request(server)
         .post('/api/users')
         .send(testUser)
@@ -38,11 +28,11 @@ describe('Users', () => {
         .expect('Content-Type', /json/);
 
       expect(res.body.token);
-      expect(await User.countDocuments()).toEqual(1);
       user = await User.findOne({ email: testUser.email });
       expect(user);
       expect(user.email).toEqual(testUser.email);
       expect(user.hash);
+      await User.findByIdAndDelete(user._id);
     });
 
     test('Should not allow duplicate user', async () => {
@@ -89,23 +79,15 @@ describe('Users', () => {
 
   describe('/api/login', () => {
     test('Should login user', async () => {
-      let res = await request(server)
-        .post('/api/users')
-        .send(testUser);
-
       res = await request(server)
         .post('/api/users/login')
-        .send(testUser)
+        .send(seedUser)
         .expect(200)
         .expect('Content-Type', /json/);
       expect(res.body.token);
     });
 
     test('Should not allow wrong password', async () => {
-      let res = await request(server)
-        .post('/api/users')
-        .send(testUser);
-
       res = await request(server)
         .post('/api/users/login')
         .send({ email: testUser.email, password: '123' })
@@ -118,10 +100,6 @@ describe('Users', () => {
     });
 
     test('Should not allow invalid email', async () => {
-      let res = await request(server)
-        .post('/api/users')
-        .send(testUser);
-
       res = await request(server)
         .post('/api/users/login')
         .send({ email: 'fakeemail@fake.com', password: '123' })
@@ -134,10 +112,6 @@ describe('Users', () => {
     });
 
     test('Should not allow invalid body', async () => {
-      let res = await request(server)
-        .post('/api/users')
-        .send(testUser);
-
       res = await request(server)
         .post('/api/users/login')
         .send({ email: null, password: false })
