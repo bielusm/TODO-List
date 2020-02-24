@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -13,7 +14,7 @@ import {
 } from 'reactstrap';
 import { addTodo } from '../../actions/todo';
 
-export const AddTodo = ({ addTodo }) => {
+export const AddTodo = ({ addTodo, history }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: ''
@@ -28,6 +29,7 @@ export const AddTodo = ({ addTodo }) => {
   const onSubmit = e => {
     e.preventDefault();
     addTodo(formData);
+    history.push('/dashboard');
   };
 
   return (
@@ -63,4 +65,8 @@ export const AddTodo = ({ addTodo }) => {
   );
 };
 
-export default connect(null, { addTodo })(AddTodo);
+AddTodo.propTypes = {
+  addTodo: PropTypes.func.isRequired
+};
+
+export default connect(null, { addTodo })(withRouter(AddTodo));
