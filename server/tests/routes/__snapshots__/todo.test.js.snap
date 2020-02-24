@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Todos GET api/todo should get all todos: Get all todos returns correct todos 1`] = `
+Object {
+  "User": Any<String>,
+  "__v": Any<Number>,
+  "_id": Any<String>,
+  "date": Anything,
+  "description": "go to gas station",
+  "name": "Get gas",
+}
+`;
+
+exports[`Todos GET api/todo should get all todos: Get all todos returns correct todos 2`] = `
+Object {
+  "User": Any<String>,
+  "__v": Any<Number>,
+  "_id": Any<String>,
+  "date": Anything,
+  "description": "",
+  "name": "Ride bike",
+}
+`;
+
+exports[`Todos GET api/todo should get all todos: Get all todos returns correct todos 3`] = `
+Object {
+  "User": Any<String>,
+  "__v": Any<Number>,
+  "_id": Any<String>,
+  "date": Anything,
+  "name": "Get groceries",
+}
+`;
+
+exports[`Todos GET api/todo should get all todos: Get all todos returns correct todos 4`] = `
+Object {
+  "User": Any<String>,
+  "__v": Any<Number>,
+  "_id": Any<String>,
+  "date": Anything,
+  "description": "must study for exam",
+  "name": "Study for exam",
+}
+`;
+
+exports[`Todos GET api/todo should get all todos: Get all todos returns correct todos 5`] = `
+Object {
+  "User": Any<String>,
+  "__v": Any<Number>,
+  "_id": Any<String>,
+  "date": Anything,
+  "description": "test description",
+  "name": "test",
+}
+`;

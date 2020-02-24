@@ -45,4 +45,22 @@ router.post('/', [auth, check('name').notEmpty()], async (req, res) => {
   }
 });
 
+//@route GET api/todo
+//@desc Get all todos for logged in user
+//@access Private
+router.get('/', auth, async (req, res) => {
+  try {
+    const errors = validationResult(req).formatWith(errorFormater);
+    //Get users todos by id
+    const user = await User.findById(req.id, 'todos').populate('todos');
+    if (!user)
+      return res.status(400).json({ errors: [{ msg: 'Invalid JWT Token' }] });
+
+    return res.status(200).json({ todos: user.todos });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ errors: [{ msg: 'Server Error' }] });
+  }
+});
+
 module.exports = router;
