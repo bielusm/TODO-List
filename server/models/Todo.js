@@ -3,7 +3,7 @@ const { ObjectId } = mongoose.Schema.Types;
 const TodoSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: String,
-  date: Date,
+  date: { type: Date, required: true },
   User: { type: ObjectId, ref: 'User', required: true }
 });
 
