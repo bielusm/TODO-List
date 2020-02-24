@@ -3,7 +3,7 @@ import { uuid } from 'uuidv4';
 import { ADD_ALERT, REMOVE_ALERT } from '../actions/types';
 
 export const addAlert = (id, message, color) => {
-  return { type: ADD_ALERT, id, message, color };
+  return { type: ADD_ALERT, payload: { id, message, color } };
 };
 
 export const removeAlert = id => {
@@ -15,6 +15,6 @@ export const setAlert = (message, color) => async dispatch => {
   dispatch(addAlert(id, message, color));
 
   setTimeout(() => {
-    dispatch(removeAlert);
+    dispatch(removeAlert(id));
   }, 5000);
 };
