@@ -32,7 +32,7 @@ export const AddTodo = ({ addTodo }) => {
 
   return (
     <Card>
-      <CardHeader tag="h4">AddTodo</CardHeader>
+      <CardHeader tag="h4">Add Todo</CardHeader>
       <CardBody>
         <Form onSubmit={e => onSubmit(e)}>
           <FormGroup>
