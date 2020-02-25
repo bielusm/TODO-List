@@ -5,10 +5,11 @@ import { Form } from 'reactstrap';
 
 describe('Todo tests', () => {
   let addTodo = jest.fn();
+  let history = { push: jest.fn() };
   const formData = { name: 'todo name', description: 'todo description' };
   let wrapper;
   beforeAll(() => {
-    wrapper = shallow(<AddTodo addTodo={addTodo} />);
+    wrapper = shallow(<AddTodo addTodo={addTodo} history={history} />);
   });
 
   test('snapshot test', () => {
@@ -31,5 +32,6 @@ describe('Todo tests', () => {
 
     wrapper.find(Form).simulate('submit', { preventDefault: () => {} });
     expect(addTodo).toHaveBeenCalledWith(formData);
+    expect(history.push).toHaveBeenCalled();
   });
 });
