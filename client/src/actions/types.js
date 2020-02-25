@@ -7,4 +7,4 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const LOGOUT = 'LOGOUT';
 
 // Todo
-export const ADD_TODOS = 'ADD_TODOS';
+export const SET_TODOS = 'SET_TODOS';

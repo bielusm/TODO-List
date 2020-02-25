@@ -1,6 +1,6 @@
 import { setAlert } from './alert';
 import axios from 'axios';
-import { ADD_TODOS } from './types';
+import { SET_TODOS } from './types';
 
 export const addTodo = formData => async (dispatch, getState) => {
   try {
@@ -25,7 +25,7 @@ export const addTodo = formData => async (dispatch, getState) => {
 
 export const addTodos = todos => {
   return {
-    type: ADD_TODOS,
+    type: SET_TODOS,
     payload: todos
   };
 };
