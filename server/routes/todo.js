@@ -56,7 +56,7 @@ router.get('/', auth, async (req, res) => {
     if (!user)
       return res.status(400).json({ errors: [{ msg: 'Invalid JWT Token' }] });
 
-    return res.status(200).json({ todos: user.todos });
+    return res.status(200).json(user.todos);
   } catch (error) {
     console.error(error);
     return res.status(400).json({ errors: [{ msg: 'Server Error' }] });

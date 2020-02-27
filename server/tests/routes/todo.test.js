@@ -8,8 +8,6 @@ const Todo = require('../../models/Todo');
 const server = require('../../app');
 const request = require('supertest');
 
-const Moment = require('moment');
-
 const { seedUser } = require('../fixtures/users');
 let token = '';
 
@@ -83,7 +81,7 @@ describe('Todos', () => {
         .set('x-auth-token', token)
         .expect(200);
 
-      const todos = res.body.todos;
+      const todos = res.body;
       todos.forEach(todo => {
         expect(todo).toMatchSnapshot(
           {

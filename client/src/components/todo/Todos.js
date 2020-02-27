@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Todo from './Todo';
 import { Table } from 'reactstrap';
+import { getAllTodos } from '../../actions/todo';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-const Todos = () => {
-  return (
+export const Todos = ({ getAllTodos, todos }) => {
+  useEffect(() => {
+    getAllTodos();
+  }, [getAllTodos]);
+
+  return todos.length === 0 ? (
+    <h3>You don't have any todos yet</h3>
+  ) : (
     <Table>
       <thead>
         <tr>
@@ -13,11 +22,21 @@ const Todos = () => {
         </tr>
       </thead>
       <tbody>
-        <Todo />
-        <Todo />
+        {todos.map((todo, index) => (
+          <Todo todo={todo} key={index} />
+        ))}
       </tbody>
     </Table>
   );
 };
 
-export default Todos;
+const mapStateToProps = state => ({
+  todos: state.todo.todos
+});
+
+Todos.propTypes = {
+  todos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getAllTodos: PropTypes.func.isRequired
+};
+
+export default connect(mapStateToProps, { getAllTodos })(Todos);
