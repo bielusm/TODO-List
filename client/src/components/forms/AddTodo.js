@@ -40,6 +40,7 @@ export const AddTodo = ({ addTodo, history }) => {
           <FormGroup>
             <Label for="name">Name</Label>
             <Input
+              id="name"
               type="text"
               name="name"
               required
@@ -51,6 +52,7 @@ export const AddTodo = ({ addTodo, history }) => {
           <FormGroup>
             <Label for="description">Description</Label>
             <Input
+              id="description"
               type="textarea"
               name="description"
               value={description}
