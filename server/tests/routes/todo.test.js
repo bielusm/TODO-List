@@ -1,8 +1,5 @@
 process.env.NODE_ENV = 'test';
 
-const mongoose = require('mongoose');
-
-const User = require('../../models/User');
 const Todo = require('../../models/Todo');
 
 const server = require('../../app');
@@ -15,6 +12,35 @@ const {
   seedDatabaseAndConnect,
   clearDatabaseAndDisconnect
 } = require('../fixtures/seedDatabase');
+
+const dummyTodo = { name: 'test', description: 'test description' };
+const createTodo = async () => {
+  return (res = await request(server)
+    .post('/api/todo')
+    .set('x-auth-token', token)
+    .send(dummyTodo)
+    .expect(200));
+};
+
+const testInvalidToken = async url => {
+  //No token
+  let res = await request(server)
+    .post(url)
+    .send(dummyTodo)
+    .expect(400);
+  let errors = res.body.errors;
+  expect(errors.length).toEqual(1);
+  expect(errors[0].msg).toEqual('No Token In Header');
+
+  res = await request(server)
+    .post(url)
+    .set('x-auth-token', 'adhwdawdad')
+    .send(dummyTodo)
+    .expect(401);
+  errors = res.body.errors;
+  expect(errors.length).toEqual(1);
+  expect(errors[0].msg).toEqual('Not authorized');
+};
 
 describe('Todos', () => {
   beforeAll(async () => {
@@ -31,40 +57,20 @@ describe('Todos', () => {
 
   describe('POST api/todo', () => {
     test('Should create a todo', async () => {
-      const res = await request(server)
-        .post('/api/todo')
-        .set('x-auth-token', token)
-        .send({ name: 'test', description: 'test description' })
-        .expect(200);
+      const res = await createTodo();
       expect(res.text).toEqual('Todo added');
 
-      const todo = await Todo.findOne({ name: 'test' });
+      const todo = await Todo.findOne(dummyTodo);
       expect(todo);
-      expect(todo.name).toEqual('test');
-      expect(todo.description).toEqual('test description');
+      expect(todo.name).toEqual(dummyTodo.name);
+      expect(todo.description).toEqual(dummyTodo.description);
       Todo.findOneAndRemove(todo);
     });
-    test('Should not allow invalid JWT token', async () => {
-      //No token
-      let res = await request(server)
-        .post('/api/todo')
-        .send({ name: 'test', description: 'test description' })
-        .expect(400);
-      let errors = res.body.errors;
-      expect(errors.length).toEqual(1);
-      expect(errors[0].msg).toEqual('No Token In Header');
-
-      res = await request(server)
-        .post('/api/todo')
-        .set('x-auth-token', 'adhwdawdad')
-        .send({ name: 'test', description: 'test description' })
-        .expect(401);
-      errors = res.body.errors;
-      expect(errors.length).toEqual(1);
-      expect(errors[0].msg).toEqual('Not authorized');
+    it('Should not allow invalid JWT token', async () => {
+      await testInvalidToken('/api/todo');
     });
 
-    test('Should not allow no name', async () => {
+    it('Should not allow no name', async () => {
       let res = await request(server)
         .post('/api/todo')
         .set('x-auth-token', token)
@@ -75,7 +81,7 @@ describe('Todos', () => {
     });
   });
   describe('GET api/todo', () => {
-    test('should get all todos', async () => {
+    it('should get all todos', async () => {
       const res = await request(server)
         .get('/api/todo')
         .set('x-auth-token', token)
@@ -94,24 +100,14 @@ describe('Todos', () => {
         );
       });
     });
-    test('Should not allow invalid JWT token', async () => {
-      //No token
-      let res = await request(server)
-        .get('/api/todo')
-        .send({ name: 'test', description: 'test description' })
-        .expect(400);
-      let errors = res.body.errors;
-      expect(errors.length).toEqual(1);
-      expect(errors[0].msg).toEqual('No Token In Header');
-      //Invalid token
-      res = await request(server)
-        .get('/api/todo')
-        .set('x-auth-token', 'adhwdawdad')
-        .send({ name: 'test', description: 'test description' })
-        .expect(401);
-      errors = res.body.errors;
-      expect(errors.length).toEqual(1);
-      expect(errors[0].msg).toEqual('Not authorized');
+    it('Should not allow invalid JWT token', async () => {
+      await testInvalidToken('/api/todo');
+    });
+  });
+
+  describe('delete API/todo/id', () => {
+    it('should delete a todo', async () => {
+      const res = await createTodo();
     });
   });
 });
