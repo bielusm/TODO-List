@@ -27,7 +27,8 @@ export const Todo = ({ todo: { name, date, _id }, removeTodo }) => {
 };
 
 Todo.propTypes = {
-  todo: PropTypes.object.isRequired
+  todo: PropTypes.object.isRequired,
+  removeTodo: PropTypes.func.isRequired
 };
 
 export default connect(null, { removeTodo })(Todo);
