@@ -53,3 +53,13 @@ Object {
   "name": "test",
 }
 `;
+
+exports[`Todos POST api/todo Should create a todo 1`] = `
+Object {
+  "User": Any<String>,
+  "_id": Any<String>,
+  "date": Anything,
+  "description": "test description",
+  "name": "test",
+}
+`;

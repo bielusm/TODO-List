@@ -38,7 +38,7 @@ router.post('/', [auth, check('name').notEmpty()], async (req, res) => {
     user.todos = [...user.todos, todo._id];
     user.save();
 
-    return res.status(200).send('Todo added');
+    return res.status(200).json(todo);
   } catch (error) {
     console.error(error);
     return res.status(400).json({ errors: [{ msg: 'Server Error' }] });
@@ -57,6 +57,35 @@ router.get('/', auth, async (req, res) => {
       return res.status(400).json({ errors: [{ msg: 'Invalid JWT Token' }] });
 
     return res.status(200).json(user.todos);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ errors: [{ msg: 'Server Error' }] });
+  }
+});
+
+//@route GET api/todo/id
+//@desc Delete a todo by id
+//@access Private
+router.delete('/:todo_id', auth, async (req, res) => {
+  try {
+    const todoId = req.params.todo_id;
+
+    const user = await User.findById(req.id);
+    if (!user)
+      return res.status(400).json({ errors: [{ msg: 'Invalid JWT Token' }] });
+
+    user.todos = user.todos.filter(todo => todo._id !== todoId);
+    await user.save();
+
+    const dbTodo = await Todo.findById(todoId);
+    if (!dbTodo)
+      return res.status(400).json({ errors: [{ msg: 'Invalid Todo ID' }] });
+
+    if (dbTodo.User._id != req.id)
+      return res.status(401).json({ errors: [{ msg: 'Not authorized' }] });
+
+    await dbTodo.remove();
+    return res.status(200).send('Todo removed');
   } catch (error) {
     console.error(error);
     return res.status(400).json({ errors: [{ msg: 'Server Error' }] });

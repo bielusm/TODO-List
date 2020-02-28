@@ -58,9 +58,13 @@ describe('Todos', () => {
   describe('POST api/todo', () => {
     test('Should create a todo', async () => {
       const res = await createTodo();
-      expect(res.text).toEqual('Todo added');
+      let todo = await Todo.findOne(dummyTodo);
+      expect(res.body).toMatchSnapshot({
+        User: expect.any(String),
+        _id: expect.any(String),
+        date: expect.anything()
+      });
 
-      const todo = await Todo.findOne(dummyTodo);
       expect(todo);
       expect(todo.name).toEqual(dummyTodo.name);
       expect(todo.description).toEqual(dummyTodo.description);
@@ -107,7 +111,19 @@ describe('Todos', () => {
 
   describe('delete API/todo/id', () => {
     it('should delete a todo', async () => {
-      const res = await createTodo();
+      let res = await createTodo();
+      const id = res.body._id;
+      const todosInDb = await Todo.countDocuments();
+
+      res = await request(server)
+        .delete(`/api/todo/${id}`)
+        .set('x-auth-token', token)
+        .expect(200);
+
+      expect(res.text).toEqual('Todo removed');
+
+      expect(await Todo.exists({ id })).toBeFalsy();
+      expect(await Todo.countDocuments()).toEqual(todosInDb - 1);
     });
   });
 });
