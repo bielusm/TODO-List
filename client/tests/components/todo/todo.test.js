@@ -7,16 +7,22 @@ import Moment from 'moment';
 const todo = mockTodos[0];
 
 describe('todo component tests', () => {
-  it('should render the todo', () => {
+  const removeTodo = jest.fn();
+  beforeAll(() => {
+    jest.clearAllMocks();
     render(
       <Table>
         <tbody>
-          <Todo todo={todo} />
+          <Todo todo={todo} removeTodo={removeTodo} />
         </tbody>
       </Table>
     );
+  });
+
+  it('should render the todo', () => {
     const textDate = Moment(todo.date).format('YYYY/MM/DD');
     expect(screen.queryByText(todo.name)).toBeInTheDocument();
     expect(screen.queryByText(textDate)).toBeInTheDocument();
   });
+  it('should call delete method with id', () => {});
 });
