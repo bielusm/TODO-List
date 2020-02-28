@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 const Todo = require('../../models/Todo');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const server = require('../../app');
 const request = require('supertest');
@@ -124,6 +125,53 @@ describe('Todos', () => {
 
       expect(await Todo.exists({ id })).toBeFalsy();
       expect(await Todo.countDocuments()).toEqual(todosInDb - 1);
+    });
+    it('should not allow invalid JWT token', async () => {
+      let res = await createTodo();
+      const id = res.body._id;
+
+      res = await request(server)
+        .delete(`/api/todo/${id}`)
+        .expect(400);
+      let errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('No Token In Header');
+
+      res = await request(server)
+        .delete(`/api/todo/${id}`)
+        .set('x-auth-token', 'adhwdawdad')
+        .expect(401);
+      errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('Not authorized');
+
+      await Todo.findOneAndRemove(id);
+    });
+
+    it('should not allow an invalid todo ID', async () => {
+      const res = await request(server)
+        .delete(`/api/todo/${new ObjectId('123456789012')}`)
+        .set('x-auth-token', token)
+        .expect(400);
+
+      expect(res.body.errors[0].msg).toEqual('Invalid Todo ID');
+    });
+
+    it('should not allow the wrong user to delete a todo', async () => {
+      let res = await createTodo();
+      const todoId = res.body._id;
+
+      res = await request(server)
+        .post('/api/users')
+        .send({ email: 'bob@gmail.com', password: 'password' });
+      const newToken = res.body.token;
+
+      res = await request(server)
+        .delete(`/api/todo/${todoId}`)
+        .set('x-auth-token', newToken)
+        .expect(401);
+
+      expect(res.body.errors[0].msg).toEqual('Not authorized');
     });
   });
 });
