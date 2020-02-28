@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Todo from '../../../src/components/todo/Todo';
+import { Todo } from '../../../src/components/todo/Todo';
 import { mockTodos } from '../../mocks/todos';
 import { Table } from 'reactstrap';
 import Moment from 'moment';

@@ -2,6 +2,9 @@ import React from 'react';
 import { mockTodos } from '../../mocks/todos';
 import { render, screen } from '@testing-library/react';
 import { Todos } from '../../../src/components/todo/Todos';
+import Todo from '../../../src/components/todo/Todo';
+
+jest.mock('../../../src/components/todo/Todo');
 
 describe('test todos component', () => {
   const getAllTodos = jest.fn();
@@ -18,6 +21,7 @@ describe('test todos component', () => {
     render(<Todos todos={mockTodos} getAllTodos={getAllTodos} />);
     mockTodos.forEach(todo => {
       expect(screen.getByText(todo.name)).toBeInTheDocument();
+      expect(Todo).toHaveBeenCalledWith({ todo }, {});
     });
   });
 

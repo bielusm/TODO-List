@@ -13,20 +13,16 @@ export const Todos = ({ getAllTodos, todos }) => {
   return todos.length === 0 ? (
     <h3>You don't have any todos yet</h3>
   ) : (
-    <Table>
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Finished</th>
-          <th>Added</th>
-        </tr>
-      </thead>
-      <tbody>
-        {todos.map((todo, index) => (
-          <Todo todo={todo} key={index} />
-        ))}
-      </tbody>
-    </Table>
+    <>
+      <h3>My Todos</h3>
+      <Table>
+        <tbody>
+          {todos.map((todo, index) => (
+            <Todo todo={todo} key={index} />
+          ))}
+        </tbody>
+      </Table>
+    </>
   );
 };
 

@@ -30,6 +30,8 @@ export const addTodos = todos => {
   };
 };
 
+export const removeTodo = id => {};
+
 export const getAllTodos = () => async (dispatch, getState) => {
   try {
     const config = {
