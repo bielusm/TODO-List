@@ -1,4 +1,4 @@
-import { SET_TODOS } from '../actions/types';
+import { SET_TODOS, REMOVE_TODO } from '../actions/types';
 
 export const initialState = {
   todos: []
@@ -11,6 +11,12 @@ const todo = (state = initialState, action) => {
       return {
         ...state,
         todos: payload
+      };
+
+    case REMOVE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo._id !== payload)
       };
     default:
       return state;
