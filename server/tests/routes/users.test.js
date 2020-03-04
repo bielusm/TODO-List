@@ -20,7 +20,7 @@ describe('Users', () => {
   });
 
   describe('POST api/users', () => {
-    test('Should register user', async () => {
+    it('Should register user', async () => {
       const res = await request(server)
         .post('/api/users')
         .send(testUser)
@@ -35,7 +35,7 @@ describe('Users', () => {
       await User.findByIdAndDelete(user._id);
     });
 
-    test('Should not allow duplicate user', async () => {
+    it('Should not allow duplicate user', async () => {
       let res = await request(server)
         .post('/api/users')
         .send(testUser);
@@ -50,7 +50,7 @@ describe('Users', () => {
       expect(errors[0].msg).toEqual('User already exists');
     });
 
-    test('Should not allow bad input', async () => {
+    it('Should not allow bad input', async () => {
       let res = await request(server)
         .post('/api/users')
         .expect(400)
@@ -78,7 +78,7 @@ describe('Users', () => {
   });
 
   describe('/api/login', () => {
-    test('Should login user', async () => {
+    it('Should login user', async () => {
       res = await request(server)
         .post('/api/users/login')
         .send(seedUser)
@@ -87,7 +87,7 @@ describe('Users', () => {
       expect(res.body.token);
     });
 
-    test('Should not allow wrong password', async () => {
+    it('Should not allow wrong password', async () => {
       res = await request(server)
         .post('/api/users/login')
         .send({ email: testUser.email, password: '123' })
@@ -99,7 +99,7 @@ describe('Users', () => {
       expect(errors[0].msg).toEqual('Username or password is incorrect');
     });
 
-    test('Should not allow invalid email', async () => {
+    it('Should not allow invalid email', async () => {
       res = await request(server)
         .post('/api/users/login')
         .send({ email: 'fakeemail@fake.com', password: '123' })
@@ -111,7 +111,7 @@ describe('Users', () => {
       expect(errors[0].msg).toEqual('User does not exist');
     });
 
-    test('Should not allow invalid body', async () => {
+    it('Should not allow invalid body', async () => {
       res = await request(server)
         .post('/api/users/login')
         .send({ email: null, password: false })

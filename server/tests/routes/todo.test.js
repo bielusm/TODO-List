@@ -57,7 +57,7 @@ describe('Todos', () => {
   });
 
   describe('POST api/todo', () => {
-    test('Should create a todo', async () => {
+    it('Should create a todo', async () => {
       const res = await createTodo();
       let todo = await Todo.findOne(dummyTodo);
       expect(res.body).toMatchSnapshot({
@@ -85,6 +85,7 @@ describe('Todos', () => {
       expect(errors[0].msg).toEqual('name is required');
     });
   });
+
   describe('GET api/todo', () => {
     it('should get all todos', async () => {
       const res = await request(server)

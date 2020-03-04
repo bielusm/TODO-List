@@ -10,7 +10,7 @@ describe('Todo tests', () => {
     render(<AddTodo addTodo={addTodo} history={history} />);
   });
 
-  test('form submit', () => {
+  it('should submit form', () => {
     const nameInput = screen.getByLabelText('Name');
     fireEvent.change(nameInput, {
       target: { name: 'name', value: formData.name }

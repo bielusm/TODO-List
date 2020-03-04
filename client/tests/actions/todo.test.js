@@ -36,7 +36,7 @@ afterEach(() => {
 
 describe('Todo action tests', () => {
   describe('addTodo tests', () => {
-    test('addTodo test', async done => {
+    it('should add todo', async done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         expect(request.config.headers).toMatchObject({
@@ -56,7 +56,7 @@ describe('Todo action tests', () => {
         });
     });
 
-    test('should respond to bad request', async done => {
+    it('should respond to bad request', async done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -77,7 +77,7 @@ describe('Todo action tests', () => {
   });
 
   describe('get todos tests', () => {
-    test('should get all todos', done => {
+    it('should get all todos', done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         expect(request.config.headers).toMatchObject({
@@ -94,7 +94,7 @@ describe('Todo action tests', () => {
       });
     });
 
-    test('should respond to bad request', async done => {
+    it('should respond to bad request', async done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -113,7 +113,7 @@ describe('Todo action tests', () => {
   });
 
   describe('Remove todo tests', () => {
-    test('should remove todo by ID', async done => {
+    it('should remove todo by ID', async done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({ status: 200 });
@@ -132,7 +132,7 @@ describe('Todo action tests', () => {
       });
     });
 
-    test('should respond to bad request', async done => {
+    it('should respond to bad request', async done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
