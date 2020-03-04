@@ -1,4 +1,10 @@
-import { addTodo, getAllTodos, addTodos } from '../../src/actions/todo';
+import {
+  addTodo,
+  getAllTodos,
+  addTodos,
+  removeTodoAction,
+  removeTodo
+} from '../../src/actions/todo';
 import configureMockStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
 import moxios from 'moxios';
@@ -88,7 +94,7 @@ describe('Todo action tests', () => {
       });
     });
 
-    test('should respond to bad request', () => {
+    test('should respond to bad request', async done => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -101,6 +107,45 @@ describe('Todo action tests', () => {
         const actions = store.getActions();
         let expected = addAlert(uuid(), 'Name required', 'danger');
         expect(actions[0]).toEqual(expected);
+        done();
+      });
+    });
+  });
+
+  describe('Remove todo tests', () => {
+    test('should remove todo by ID', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({ status: 200 });
+      });
+
+      const id = dummyTodos[0]._id;
+      store.dispatch(removeTodoAction(id)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toEqual(
+          expect.arrayContaining([
+            addAlert(uuid(), 'Todo removed', 'success'),
+            removeTodo(id)
+          ])
+        );
+        done();
+      });
+    });
+
+    test('should respond to bad request', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 400,
+          response: { errors: [{ msg: 'Invalid Todo ID' }] }
+        });
+      });
+
+      const id = dummyTodos[0]._id;
+      store.dispatch(removeTodoAction(id)).then(() => {
+        const actions = store.getActions();
+        const expected = addAlert(uuid(), 'Invalid Todo ID', 'danger');
+        expect(actions).toEqual([expected]);
         done();
       });
     });

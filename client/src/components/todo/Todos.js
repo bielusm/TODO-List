@@ -16,6 +16,14 @@ export const Todos = ({ getAllTodos, todos }) => {
     <>
       <h3>My Todos</h3>
       <Table>
+        <thead>
+          <tr>
+            <td>Name</td>
+            <td>Date</td>
+            <td>Edit</td>
+            <td>Remove</td>
+          </tr>
+        </thead>
         <tbody>
           {todos.map((todo, index) => (
             <Todo todo={todo} key={index} />
