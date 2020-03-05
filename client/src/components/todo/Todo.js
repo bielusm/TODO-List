@@ -13,7 +13,7 @@ export const Todo = ({ todo: { name, date, _id }, removeTodoAction }) => {
         <Moment format="YYYY/MM/DD">{date}</Moment>
       </td>
       <td>
-        <Button color="link" onClick="">
+        <Button color="link">
           <i className="fas fa-edit fa-lg"></i>
         </Button>
       </td>
