@@ -7,13 +7,13 @@ import Moment from 'moment';
 const todo = mockTodos[0];
 
 describe('todo component tests', () => {
-  const removeTodo = jest.fn();
+  const removeTodoAction = jest.fn();
   beforeAll(() => {
     jest.clearAllMocks();
     render(
       <Table>
         <tbody>
-          <Todo todo={todo} removeTodo={removeTodo} />
+          <Todo todo={todo} removeTodoAction={removeTodoAction} />
         </tbody>
       </Table>
     );
