@@ -43,17 +43,6 @@ Object {
 }
 `;
 
-exports[`Todos GET api/todo should get all todos: Get all todos returns correct todos 5`] = `
-Object {
-  "User": Any<String>,
-  "__v": Any<Number>,
-  "_id": Any<String>,
-  "date": Anything,
-  "description": "test description",
-  "name": "test",
-}
-`;
-
 exports[`Todos POST api/todo Should create a todo 1`] = `
 Object {
   "User": Any<String>,

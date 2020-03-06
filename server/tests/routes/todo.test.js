@@ -10,8 +10,9 @@ const { seedUser } = require('../fixtures/users');
 let token = '';
 
 const {
-  seedDatabaseAndConnect,
-  clearDatabaseAndDisconnect
+  seedDatabase,
+  disconnect,
+  connect
 } = require('../fixtures/seedDatabase');
 
 const dummyTodo = { name: 'test', description: 'test description' };
@@ -45,15 +46,20 @@ const testInvalidToken = async url => {
 
 describe('Todos', () => {
   beforeAll(async () => {
-    await seedDatabaseAndConnect();
+    await connect();
+    await seedDatabase();
+  });
+  afterAll(async () => {
+    await disconnect();
+  });
+
+  beforeEach(async () => {
+    await seedDatabase();
     //login test user
     res = await request(server)
       .post('/api/users/login')
       .send(seedUser);
     token = res.body.token;
-  });
-  afterAll(async function() {
-    await clearDatabaseAndDisconnect();
   });
 
   describe('POST api/todo', () => {
@@ -69,7 +75,6 @@ describe('Todos', () => {
       expect(todo);
       expect(todo.name).toEqual(dummyTodo.name);
       expect(todo.description).toEqual(dummyTodo.description);
-      Todo.findOneAndRemove(todo);
     });
     it('Should not allow invalid JWT token', async () => {
       await testInvalidToken('/api/todo');
@@ -144,8 +149,6 @@ describe('Todos', () => {
       errors = res.body.errors;
       expect(errors.length).toEqual(1);
       expect(errors[0].msg).toEqual('Not authorized');
-
-      await Todo.findOneAndRemove(id);
     });
 
     it('should not allow an invalid todo ID', async () => {
@@ -174,4 +177,15 @@ describe('Todos', () => {
       expect(res.body.errors[0].msg).toEqual('Not authorized');
     });
   });
+
+  // describe('GET api/todos/todo_id', () => {
+  //   // it('should return the todo by its id', async done => {
+  //   //   const res = await request(server)
+  //   //     .get(`/api/todo/${todo._id}`)
+  //   //     .set('x-auth-token', token);
+  //   //   expect(200);
+
+  //   //   done();
+  //   });
+  // });
 });
