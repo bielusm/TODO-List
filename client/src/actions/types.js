@@ -9,3 +9,4 @@ export const LOGOUT = 'LOGOUT';
 // Todo
 export const SET_TODOS = 'SET_TODOS';
 export const REMOVE_TODO = 'REMOVE_TODO';
+export const SET_TODO = 'SET_TODO';

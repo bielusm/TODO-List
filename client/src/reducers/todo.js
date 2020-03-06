@@ -1,7 +1,8 @@
-import { SET_TODOS, REMOVE_TODO } from '../actions/types';
+import { SET_TODOS, REMOVE_TODO, SET_TODO } from '../actions/types';
 
 export const initialState = {
-  todos: []
+  todos: [],
+  todo: undefined
 };
 
 const todo = (state = initialState, action) => {
@@ -17,6 +18,12 @@ const todo = (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.filter(todo => todo._id !== payload)
+      };
+
+    case SET_TODO:
+      return {
+        ...state,
+        todo: payload
       };
     default:
       return state;
