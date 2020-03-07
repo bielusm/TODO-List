@@ -7,6 +7,7 @@ const server = require('../../app');
 const request = require('supertest');
 
 const { seedUser } = require('../fixtures/users');
+const { seedTodos } = require('../fixtures/todos');
 let token = '';
 
 const {
@@ -178,14 +179,61 @@ describe('Todos', () => {
     });
   });
 
-  // describe('GET api/todos/todo_id', () => {
-  //   // it('should return the todo by its id', async done => {
-  //   //   const res = await request(server)
-  //   //     .get(`/api/todo/${todo._id}`)
-  //   //     .set('x-auth-token', token);
-  //   //   expect(200);
+  describe('GET api/todos/todo_id', () => {
+    it('should return the todo by its id', async done => {
+      const todo = await Todo.findOne(seedTodos[0]);
+      const res = await request(server)
+        .get(`/api/todo/${todo._id}`)
+        .set('Accept', 'application/json')
+        .set('x-auth-token', token)
+        .expect(200);
 
-  //   //   done();
-  //   });
-  // });
+      expect(JSON.stringify(res.body)).toEqual(JSON.stringify(todo));
+      done();
+    });
+
+    it('should not allow invalid JWT token', async () => {
+      const todo = await Todo.findOne(seedTodos[0]);
+      const id = todo._id;
+      res = await request(server)
+        .get(`/api/todo/${id}`)
+        .expect(400);
+      let errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('No Token In Header');
+
+      res = await request(server)
+        .get(`/api/todo/${id}`)
+        .set('x-auth-token', 'adhwdawdad')
+        .expect(401);
+      errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('Not authorized');
+    });
+
+    it('should not allow an invalid todo ID', async () => {
+      const res = await request(server)
+        .get(`/api/todo/${new ObjectId('123456789012')}`)
+        .set('x-auth-token', token)
+        .expect(400);
+
+      expect(res.body.errors[0].msg).toEqual('Invalid Todo ID');
+    });
+
+    it('should not allow the wrong user to delete a todo', async () => {
+      const todo = await Todo.findOne(seedTodos[0]);
+      const todoId = todo._id;
+      res = await request(server)
+        .post('/api/users')
+        .send({ email: 'bob@gmail.com', password: 'password' });
+      const newToken = res.body.token;
+
+      res = await request(server)
+        .get(`/api/todo/${todoId}`)
+        .set('x-auth-token', newToken)
+        .expect(401);
+
+      expect(res.body.errors[0].msg).toEqual('Not authorized');
+    });
+  });
 });
