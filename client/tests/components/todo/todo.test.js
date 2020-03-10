@@ -8,14 +8,14 @@ import { MemoryRouter } from 'react-router-dom';
 const todo = mockTodos[0];
 
 describe('todo component tests', () => {
-  const removeTodoAction = jest.fn();
+  const removeTodoByIdAction = jest.fn();
   beforeAll(() => {
     jest.clearAllMocks();
     render(
       <MemoryRouter>
         <Table>
           <tbody>
-            <Todo todo={todo} removeTodoAction={removeTodoAction} />
+            <Todo todo={todo} removeTodoByIdAction={removeTodoByIdAction} />
           </tbody>
         </Table>
       </MemoryRouter>
