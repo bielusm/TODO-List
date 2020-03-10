@@ -3,7 +3,9 @@ import {
   getAllTodos,
   addTodos,
   removeTodoAction,
-  removeTodo
+  removeTodo,
+  setTodo,
+  setTodoAction
 } from '../../src/actions/todo';
 import configureMockStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
@@ -12,7 +14,7 @@ import { addAlert } from '../../src/actions/alert';
 const mockStore = configureMockStore([ReduxThunk]);
 import { uuid } from 'uuidv4';
 
-const dummyTodos = [{ name: 'this is a todo' }];
+const dummyTodos = [{ name: 'this is a todo', _id: 1 }];
 
 jest.mock('uuidv4', () => ({
   __esModule: true,
@@ -143,6 +145,43 @@ describe('Todo action tests', () => {
 
       const id = dummyTodos[0]._id;
       store.dispatch(removeTodoAction(id)).then(() => {
+        const actions = store.getActions();
+        const expected = addAlert(uuid(), 'Invalid Todo ID', 'danger');
+        expect(actions).toEqual([expected]);
+        done();
+      });
+    });
+  });
+
+  describe('Set Todo tests', () => {
+    it('should set todo', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: dummyTodos[0]
+        });
+      });
+
+      store.dispatch(setTodoAction(dummyTodos[0]._idid)).then(() => {
+        const actions = store.getActions();
+        const expected = setTodo(dummyTodos[0]);
+        expect(actions).toEqual([expected]);
+        done();
+      });
+    });
+
+    test('should respond to bad request', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 400,
+          response: { errors: [{ msg: 'Invalid Todo ID' }] }
+        });
+      });
+
+      const id = dummyTodos[0]._id;
+      store.dispatch(setTodoAction(id)).then(() => {
         const actions = store.getActions();
         const expected = addAlert(uuid(), 'Invalid Todo ID', 'danger');
         expect(actions).toEqual([expected]);

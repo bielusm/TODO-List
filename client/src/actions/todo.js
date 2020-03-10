@@ -1,6 +1,30 @@
 import { setAlert } from './alert';
 import axios from 'axios';
-import { SET_TODOS, REMOVE_TODO } from './types';
+import { SET_TODOS, REMOVE_TODO, SET_TODO } from './types';
+
+export const setTodo = todo => ({
+  type: SET_TODO,
+  payload: todo
+});
+
+export const setTodoAction = id => async (dispatch, getState) => {
+  try {
+    const config = {
+      headers: {
+        'x-auth-token': getState().user.token
+      }
+    };
+
+    const res = await axios.get(`/api/todo/${id}`, config);
+    dispatch(setTodo(res.data));
+  } catch (error) {
+    if (error.response) {
+      error.response.data.errors.forEach(error => {
+        dispatch(setAlert(error.msg, 'danger'));
+      });
+    } else console.error(error);
+  }
+};
 
 export const removeTodo = id => ({
   type: REMOVE_TODO,
