@@ -17,6 +17,7 @@ import { Container } from 'reactstrap';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { setToken } from './actions/auth';
+import EditTodo from './components/forms/EditTodo';
 
 const store = configureStore;
 
@@ -38,6 +39,7 @@ const jsx = (
             component={Dashboard}
           />
           <PrivateRoute exact path="/add-todo" component={AddTodo} />
+          <PrivateRoute exact path="/edit-todo/:todoId" component={EditTodo} />
         </Switch>
       </Container>
     </Router>

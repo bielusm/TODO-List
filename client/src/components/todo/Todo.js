@@ -4,6 +4,7 @@ import { Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { removeTodoAction } from '../../actions/todo';
+import { Link } from 'react-router-dom';
 
 export const Todo = ({ todo: { name, date, _id }, removeTodoAction }) => {
   return (
@@ -13,9 +14,11 @@ export const Todo = ({ todo: { name, date, _id }, removeTodoAction }) => {
         <Moment format="YYYY/MM/DD">{date}</Moment>
       </td>
       <td>
-        <Button color="link">
-          <i className="fas fa-edit fa-lg"></i>
-        </Button>
+        <Link to={`/edit-todo/${_id}`}>
+          <Button>
+            <i className="fas fa-edit fa-lg"></i>
+          </Button>
+        </Link>
       </td>
       <td>
         <Button color="link" onClick={e => removeTodoAction(_id)}>
