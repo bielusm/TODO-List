@@ -1,14 +1,43 @@
 import { setAlert } from './alert';
 import axios from 'axios';
-import { SET_TODOS, REMOVE_TODO, SET_TODO, REMOVE_TODO_BY_ID } from './types';
+import {
+  SET_TODOS,
+  REMOVE_TODO,
+  SET_TODO,
+  REMOVE_TODO_BY_ID,
+  EDIT_TODO
+} from './types';
 
 export const removeTodo = () => ({
   type: REMOVE_TODO
 });
 
-export const editTodo = formData => {
-  console.log('place holder');
+export const editTodoAction = (id, updates) => async (dispatch, getState) => {
+  try {
+    const body = JSON.stringify(updates);
+    const config = {
+      headers: {
+        'x-auth-token': getState().user.token
+      }
+    };
+
+    const res = await axios.put(`/api/todo/${id}`, body, config);
+    dispatch(editTodo(id, res.data));
+    dispatch(setAlert('Todo updated', 'success'));
+  } catch (error) {
+    if (error.response) {
+      error.response.data.errors.forEach(error => {
+        dispatch(setAlert(error.msg, 'danger'));
+      });
+    } else console.error(error);
+  }
 };
+
+export const editTodo = (id, updates) => ({
+  type: EDIT_TODO,
+  id,
+  ...updates
+});
 
 export const setTodo = todo => ({
   type: SET_TODO,
