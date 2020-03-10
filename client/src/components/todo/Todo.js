@@ -3,10 +3,10 @@ import Moment from 'react-moment';
 import { Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeTodoAction } from '../../actions/todo';
+import { removeTodoByIdAction } from '../../actions/todo';
 import { Link } from 'react-router-dom';
 
-export const Todo = ({ todo: { name, date, _id }, removeTodoAction }) => {
+export const Todo = ({ todo: { name, date, _id }, removeTodoByIdAction }) => {
   return (
     <tr>
       <td>{name}</td>
@@ -21,7 +21,7 @@ export const Todo = ({ todo: { name, date, _id }, removeTodoAction }) => {
         </Link>
       </td>
       <td>
-        <Button color="link" onClick={e => removeTodoAction(_id)}>
+        <Button color="link" onClick={e => removeTodoByIdAction(_id)}>
           <i className="fas fa-check fa-lg"></i>
         </Button>
       </td>
@@ -31,7 +31,7 @@ export const Todo = ({ todo: { name, date, _id }, removeTodoAction }) => {
 
 Todo.propTypes = {
   todo: PropTypes.object.isRequired,
-  removeTodoAction: PropTypes.func.isRequired
+  removeTodoByIdAction: PropTypes.func.isRequired
 };
 
-export default connect(null, { removeTodoAction })(Todo);
+export default connect(null, { removeTodoByIdAction })(Todo);

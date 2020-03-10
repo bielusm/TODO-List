@@ -1,6 +1,14 @@
 import { setAlert } from './alert';
 import axios from 'axios';
-import { SET_TODOS, REMOVE_TODO, SET_TODO } from './types';
+import { SET_TODOS, REMOVE_TODO, SET_TODO, REMOVE_TODO_BY_ID } from './types';
+
+export const removeTodo = () => ({
+  type: REMOVE_TODO
+});
+
+export const editTodo = formData => {
+  console.log('place holder');
+};
 
 export const setTodo = todo => ({
   type: SET_TODO,
@@ -26,12 +34,12 @@ export const setTodoAction = id => async (dispatch, getState) => {
   }
 };
 
-export const removeTodo = id => ({
-  type: REMOVE_TODO,
+export const removeTodoById = id => ({
+  type: REMOVE_TODO_BY_ID,
   payload: id
 });
 
-export const removeTodoAction = id => async (dispatch, getState) => {
+export const removeTodoByIdAction = id => async (dispatch, getState) => {
   const config = {
     headers: {
       'x-auth-token': getState().user.token
@@ -41,7 +49,7 @@ export const removeTodoAction = id => async (dispatch, getState) => {
   try {
     const res = await axios.delete(`/api/todo/${id}`, config);
     dispatch(setAlert('Todo removed', 'success'));
-    dispatch(removeTodo(id));
+    dispatch(removeTodoById(id));
   } catch (error) {
     if (error.response) {
       error.response.data.errors.forEach(error => {

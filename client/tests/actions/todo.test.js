@@ -2,10 +2,11 @@ import {
   addTodo,
   getAllTodos,
   addTodos,
-  removeTodoAction,
+  removeTodoByIdAction,
   removeTodo,
   setTodo,
-  setTodoAction
+  setTodoAction,
+  removeTodoById
 } from '../../src/actions/todo';
 import configureMockStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
@@ -122,12 +123,12 @@ describe('Todo action tests', () => {
       });
 
       const id = dummyTodos[0]._id;
-      store.dispatch(removeTodoAction(id)).then(() => {
+      store.dispatch(removeTodoByIdAction(id)).then(() => {
         const actions = store.getActions();
         expect(actions).toEqual(
           expect.arrayContaining([
             addAlert(uuid(), 'Todo removed', 'success'),
-            removeTodo(id)
+            removeTodoById(id)
           ])
         );
         done();
@@ -144,7 +145,7 @@ describe('Todo action tests', () => {
       });
 
       const id = dummyTodos[0]._id;
-      store.dispatch(removeTodoAction(id)).then(() => {
+      store.dispatch(removeTodoByIdAction(id)).then(() => {
         const actions = store.getActions();
         const expected = addAlert(uuid(), 'Invalid Todo ID', 'danger');
         expect(actions).toEqual([expected]);
@@ -163,7 +164,7 @@ describe('Todo action tests', () => {
         });
       });
 
-      store.dispatch(setTodoAction(dummyTodos[0]._idid)).then(() => {
+      store.dispatch(setTodoAction(dummyTodos[0]._id)).then(() => {
         const actions = store.getActions();
         const expected = setTodo(dummyTodos[0]);
         expect(actions).toEqual([expected]);

@@ -4,15 +4,29 @@ import { EditTodo } from '../../../src/components/forms/EditTodo';
 import { mockTodos } from '../../mocks/todos';
 
 describe('Edit Todo tests', () => {
-  let editTodo = jest.fn();
+  const editTodo = jest.fn();
+  const setTodoAction = jest.fn();
+  const removeTodo = jest.fn();
   let history = { push: jest.fn() };
   const formData = { name: 'todo name', description: 'todo description' };
 
+  const match = { params: { todoId: '12345678' } };
   beforeEach(() => {
-    render(
-      <EditTodo editTodo={editTodo} history={history} todo={mockTodos[0]} />
-    );
     jest.clearAllMocks();
+    render(
+      <EditTodo
+        editTodo={editTodo}
+        history={history}
+        todo={mockTodos[0]}
+        match={match}
+        setTodoAction={setTodoAction}
+        removeTodo={removeTodo}
+      />
+    );
+  });
+
+  it('should call setTodo with todoID', () => {
+    expect(setTodoAction).toBeCalledWith('12345678');
   });
 
   it('should submit without change', () => {

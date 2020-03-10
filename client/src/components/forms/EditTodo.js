@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -12,13 +12,33 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
-import { editTodo } from '../../actions/todo';
+import { editTodo, setTodoAction, removeTodo } from '../../actions/todo';
 
-export const EditTodo = ({ editTodo, history, todo }) => {
+export const EditTodo = ({
+  removeTodo,
+  setTodoAction,
+  editTodo,
+  history,
+  todo,
+  match
+}) => {
   const [formData, setFormData] = useState({
-    name: todo.name,
-    description: todo.description
+    name: todo ? todo.name : '',
+    description: todo ? todo.description : ''
   });
+
+  useEffect(() => {
+    removeTodo();
+
+    setTodoAction(match.params.todoId);
+  }, []);
+
+  useEffect(() => {
+    setFormData({
+      name: todo ? todo.name : '',
+      description: todo ? todo.description : ''
+    });
+  }, [todo]);
 
   const { name, description } = formData;
 
@@ -71,8 +91,12 @@ EditTodo.propTypes = {
   editTodo: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  todo: state.todo.todo;
-};
+const mapStateToProps = state => ({
+  todo: state.todo.todo
+});
 
-export default connect(mapStateToProps, { editTodo })(withRouter(EditTodo));
+export default connect(mapStateToProps, {
+  editTodo,
+  setTodoAction,
+  removeTodo
+})(withRouter(EditTodo));
