@@ -12,12 +12,12 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
-import { editTodo, setTodoAction, removeTodo } from '../../actions/todo';
+import { editTodoAction, setTodoAction, removeTodo } from '../../actions/todo';
 
 export const EditTodo = ({
   removeTodo,
   setTodoAction,
-  editTodo,
+  editTodoAction,
   history,
   todo,
   match
@@ -48,7 +48,7 @@ export const EditTodo = ({
 
   const onSubmit = e => {
     e.preventDefault();
-    editTodo(todo._id, formData);
+    editTodoAction(todo._id, formData);
     history.push('/dashboard');
   };
 
@@ -88,7 +88,7 @@ export const EditTodo = ({
 };
 
 EditTodo.propTypes = {
-  editTodo: PropTypes.func.isRequired
+  editTodoAction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -96,7 +96,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  editTodo,
+  editTodoAction,
   setTodoAction,
   removeTodo
 })(withRouter(EditTodo));

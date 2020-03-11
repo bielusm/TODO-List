@@ -199,15 +199,15 @@ describe('Todo action tests', () => {
 
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
+        expect(request.config.headers).toMatchObject({
+          'Content-Type': 'application/json'
+        });
         request.respondWith({ status: 200, response: todoUpdates });
       });
 
       store.dispatch(editTodoAction(id, todoUpdates)).then(() => {
         const actions = store.getActions();
-        expect(actions).toEqual([
-          editTodo(id, todoUpdates),
-          addAlert(uuid(), 'Todo updated', 'success')
-        ]);
+        expect(actions).toEqual([editTodo(id, todoUpdates)]);
         done();
       });
     });

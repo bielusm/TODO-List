@@ -17,13 +17,13 @@ export const editTodoAction = (id, updates) => async (dispatch, getState) => {
     const body = JSON.stringify(updates);
     const config = {
       headers: {
+        'Content-Type': 'application/json',
         'x-auth-token': getState().user.token
       }
     };
 
     const res = await axios.put(`/api/todo/${id}`, body, config);
     dispatch(editTodo(id, res.data));
-    dispatch(setAlert('Todo updated', 'success'));
   } catch (error) {
     if (error.response) {
       error.response.data.errors.forEach(error => {
@@ -36,7 +36,7 @@ export const editTodoAction = (id, updates) => async (dispatch, getState) => {
 export const editTodo = (id, updates) => ({
   type: EDIT_TODO,
   id,
-  ...updates
+  payload: { ...updates }
 });
 
 export const setTodo = todo => ({

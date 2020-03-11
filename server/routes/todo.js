@@ -136,7 +136,7 @@ router.put('/:todo_id', auth, async (req, res) => {
     if (req.body.name || req.body.name === '') dbTodo.name = req.body.name;
     if (req.body.description || req.body.description === '')
       dbTodo.description = req.body.description;
-    dbTodo.save();
+    await dbTodo.save();
 
     return res.status(200).json(dbTodo);
   } catch (error) {

@@ -4,7 +4,7 @@ import { EditTodo } from '../../../src/components/forms/EditTodo';
 import { mockTodos } from '../../mocks/todos';
 
 describe('Edit Todo tests', () => {
-  const editTodo = jest.fn();
+  const editTodoAction = jest.fn();
   const setTodoAction = jest.fn();
   const removeTodo = jest.fn();
   let history = { push: jest.fn() };
@@ -15,7 +15,7 @@ describe('Edit Todo tests', () => {
     jest.clearAllMocks();
     render(
       <EditTodo
-        editTodo={editTodo}
+        editTodoAction={editTodoAction}
         history={history}
         todo={mockTodos[0]}
         match={match}
@@ -36,7 +36,7 @@ describe('Edit Todo tests', () => {
       name: mockTodos[0].name,
       description: mockTodos[0].description
     });
-    expect(editTodo).toHaveBeenCalledWith(mockTodos[0]._id, expected);
+    expect(editTodoAction).toHaveBeenCalledWith(mockTodos[0]._id, expected);
     expect(history.push).toHaveBeenCalled();
   });
 
@@ -60,7 +60,7 @@ describe('Edit Todo tests', () => {
       name: formData.name,
       description: formData.description
     });
-    expect(editTodo).toHaveBeenCalledWith(mockTodos[0]._id, expected);
+    expect(editTodoAction).toHaveBeenCalledWith(mockTodos[0]._id, expected);
     expect(history.push).toHaveBeenCalled();
   });
 });
