@@ -236,4 +236,74 @@ describe('Todos', () => {
       expect(res.body.errors[0].msg).toEqual('Not authorized');
     });
   });
+
+  describe('PUT api/todos/todoId', () => {
+    it('should edit the todo', async () => {
+      const edits = { name: 'new name', description: 'new description' };
+      const todo = await Todo.findOne(seedTodos[0]);
+      const todoId = todo._id;
+
+      res = await request(server)
+        .put(`/api/todo/${todoId}`)
+        .set('x-auth-token', token)
+        .send(edits)
+        .expect(200);
+
+      expect(res.body).toMatchObject({
+        ...edits
+      });
+    });
+
+    it('should not allow invalid JWT token', async () => {
+      const edits = { name: 'new name', description: 'new description' };
+      const todo = await Todo.findOne(seedTodos[0]);
+      const id = todo._id;
+
+      res = await request(server)
+        .put(`/api/todo/${id}`)
+        .send(edits)
+        .expect(400);
+      let errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('No Token In Header');
+
+      res = await request(server)
+        .put(`/api/todo/${id}`)
+        .set('x-auth-token', 'adhwdawdad')
+        .send(edits)
+        .expect(401);
+      errors = res.body.errors;
+      expect(errors.length).toEqual(1);
+      expect(errors[0].msg).toEqual('Not authorized');
+    });
+
+    it('should not allow invalid todo ID', async () => {
+      const edits = { name: 'new name', description: 'new description' };
+      const res = await request(server)
+        .put(`/api/todo/${new ObjectId('123456789012')}`)
+        .set('x-auth-token', token)
+        .send(edits)
+        .expect(400);
+
+      expect(res.body.errors[0].msg).toEqual('Invalid Todo ID');
+    });
+
+    it('should not allow the wrong user to edit todo', async () => {
+      const todo = await Todo.findOne(seedTodos[0]);
+      const todoId = todo._id;
+      res = await request(server)
+        .post('/api/users')
+        .send({ email: 'bob@gmail.com', password: 'password' });
+      const newToken = res.body.token;
+
+      const edits = { name: 'new name', description: 'new description' };
+      res = await request(server)
+        .put(`/api/todo/${todoId}`)
+        .set('x-auth-token', newToken)
+        .send(edits)
+        .expect(401);
+
+      expect(res.body.errors[0].msg).toEqual('Not authorized');
+    });
+  });
 });
