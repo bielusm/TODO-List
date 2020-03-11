@@ -37,8 +37,6 @@ const todo = (state = initialState, action) => {
         ...state,
         todos: state.todos.map(todo => {
           if (todo._id !== action.id) return todo;
-
-          console.log({ ...todo, ...payload });
           return { ...todo, ...payload };
         })
       };
