@@ -2,8 +2,12 @@ import {
   addTodo,
   getAllTodos,
   addTodos,
-  removeTodoAction,
-  removeTodo
+  removeTodoByIdAction,
+  editTodo,
+  editTodoAction,
+  setTodo,
+  setTodoAction,
+  removeTodoById
 } from '../../src/actions/todo';
 import configureMockStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
@@ -11,8 +15,8 @@ import moxios from 'moxios';
 import { addAlert } from '../../src/actions/alert';
 const mockStore = configureMockStore([ReduxThunk]);
 import { uuid } from 'uuidv4';
-
-const dummyTodos = [{ name: 'this is a todo' }];
+import { mockTodos } from '../mocks/todos';
+const dummyTodos = [{ name: 'this is a todo', _id: 1 }];
 
 jest.mock('uuidv4', () => ({
   __esModule: true,
@@ -120,12 +124,12 @@ describe('Todo action tests', () => {
       });
 
       const id = dummyTodos[0]._id;
-      store.dispatch(removeTodoAction(id)).then(() => {
+      store.dispatch(removeTodoByIdAction(id)).then(() => {
         const actions = store.getActions();
         expect(actions).toEqual(
           expect.arrayContaining([
             addAlert(uuid(), 'Todo removed', 'success'),
-            removeTodo(id)
+            removeTodoById(id)
           ])
         );
         done();
@@ -142,10 +146,87 @@ describe('Todo action tests', () => {
       });
 
       const id = dummyTodos[0]._id;
-      store.dispatch(removeTodoAction(id)).then(() => {
+      store.dispatch(removeTodoByIdAction(id)).then(() => {
         const actions = store.getActions();
         const expected = addAlert(uuid(), 'Invalid Todo ID', 'danger');
         expect(actions).toEqual([expected]);
+        done();
+      });
+    });
+  });
+
+  describe('Set Todo tests', () => {
+    it('should set todo', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: dummyTodos[0]
+        });
+      });
+
+      store.dispatch(setTodoAction(dummyTodos[0]._id)).then(() => {
+        const actions = store.getActions();
+        const expected = setTodo(dummyTodos[0]);
+        expect(actions).toEqual([expected]);
+        done();
+      });
+    });
+
+    test('should respond to bad request', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 400,
+          response: { errors: [{ msg: 'Invalid Todo ID' }] }
+        });
+      });
+
+      const id = dummyTodos[0]._id;
+      store.dispatch(setTodoAction(id)).then(() => {
+        const actions = store.getActions();
+        const expected = addAlert(uuid(), 'Invalid Todo ID', 'danger');
+        expect(actions).toEqual([expected]);
+        done();
+      });
+    });
+  });
+
+  describe('edit todo tests', () => {
+    test('should edit todo', async done => {
+      const todoUpdates = { name: 'new name', description: 'new description' };
+      const id = mockTodos[0]._id;
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        expect(request.config.headers).toMatchObject({
+          'Content-Type': 'application/json'
+        });
+        request.respondWith({ status: 200, response: todoUpdates });
+      });
+
+      store.dispatch(editTodoAction(id, todoUpdates)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toEqual([editTodo(id, todoUpdates)]);
+        done();
+      });
+    });
+
+    test('should respond to bad request', async done => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 400,
+          response: { errors: [{ msg: 'Invalid Todo ID' }] }
+        });
+      });
+
+      const updates = { name: 'new name', description: 'new description' };
+      store.dispatch(editTodoAction(mockTodos[0]._id, updates)).then(() => {
+        const actions = store.getActions();
+        expect(actions).toEqual([
+          addAlert(uuid(), 'Invalid Todo ID', 'danger')
+        ]);
         done();
       });
     });

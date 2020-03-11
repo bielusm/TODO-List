@@ -39,19 +39,27 @@ const fillTodos = async () => {
   await user.save();
 };
 
-const seedDatabaseAndConnect = async () => {
-  await connectToDb();
+const seedDatabase = async () => {
+  await clearDatabase();
   await fillUsers();
   await fillTodos();
 };
 
-const clearDatabaseAndDisconnect = async () => {
-  await User.deleteMany({});
-  await Todo.deleteMany({});
+const connect = async () => {
+  await connectToDb();
+};
+
+const disconnect = async () => {
   await mongoose.connection.close();
 };
 
+const clearDatabase = async () => {
+  await User.deleteMany({});
+  await Todo.deleteMany({});
+};
+
 module.exports = {
-  seedDatabaseAndConnect,
-  clearDatabaseAndDisconnect
+  seedDatabase,
+  connect,
+  disconnect
 };

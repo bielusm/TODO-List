@@ -1,7 +1,14 @@
-import { SET_TODOS, REMOVE_TODO } from '../actions/types';
+import {
+  SET_TODOS,
+  REMOVE_TODO,
+  REMOVE_TODO_BY_ID,
+  SET_TODO,
+  EDIT_TODO
+} from '../actions/types';
 
 export const initialState = {
-  todos: []
+  todos: [],
+  todo: null
 };
 
 const todo = (state = initialState, action) => {
@@ -16,7 +23,28 @@ const todo = (state = initialState, action) => {
     case REMOVE_TODO:
       return {
         ...state,
+        todo: null
+      };
+
+    case REMOVE_TODO_BY_ID:
+      return {
+        ...state,
         todos: state.todos.filter(todo => todo._id !== payload)
+      };
+
+    case EDIT_TODO:
+      return {
+        ...state,
+        todos: state.todos.map(todo => {
+          if (todo._id !== action.id) return todo;
+          return { ...todo, ...payload };
+        })
+      };
+
+    case SET_TODO:
+      return {
+        ...state,
+        todo: payload
       };
     default:
       return state;

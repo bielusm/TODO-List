@@ -4,18 +4,21 @@ import { Todo } from '../../../src/components/todo/Todo';
 import { mockTodos } from '../../mocks/todos';
 import { Table } from 'reactstrap';
 import Moment from 'moment';
+import { MemoryRouter } from 'react-router-dom';
 const todo = mockTodos[0];
 
 describe('todo component tests', () => {
-  const removeTodo = jest.fn();
+  const removeTodoByIdAction = jest.fn();
   beforeAll(() => {
     jest.clearAllMocks();
     render(
-      <Table>
-        <tbody>
-          <Todo todo={todo} removeTodo={removeTodo} />
-        </tbody>
-      </Table>
+      <MemoryRouter>
+        <Table>
+          <tbody>
+            <Todo todo={todo} removeTodoByIdAction={removeTodoByIdAction} />
+          </tbody>
+        </Table>
+      </MemoryRouter>
     );
   });
 

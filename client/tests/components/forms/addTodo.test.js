@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AddTodo } from '../../../src/components/forms/AddTodo';
 
-describe('Todo tests', () => {
+describe('AddTodo tests', () => {
   let addTodo = jest.fn();
   let history = { push: jest.fn() };
   const formData = { name: 'todo name', description: 'todo description' };

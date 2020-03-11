@@ -6,17 +6,23 @@ const server = require('../../app');
 const request = require('supertest');
 const { testUser, seedUser } = require('../fixtures/users');
 const {
-  seedDatabaseAndConnect,
-  clearDatabaseAndDisconnect
+  seedDatabase,
+  connect,
+  disconnect
 } = require('../fixtures/seedDatabase');
 
 describe('Users', () => {
-  beforeAll(async function() {
-    await seedDatabaseAndConnect();
+  beforeAll(async () => {
+    await connect();
+    await seedDatabase();
   });
 
-  afterAll(async function() {
-    await clearDatabaseAndDisconnect();
+  afterAll(async () => {
+    await disconnect();
+  });
+
+  beforeEach(async () => {
+    await seedDatabase();
   });
 
   describe('POST api/users', () => {
@@ -32,7 +38,6 @@ describe('Users', () => {
       expect(user);
       expect(user.email).toEqual(testUser.email);
       expect(user.hash);
-      await User.findByIdAndDelete(user._id);
     });
 
     it('Should not allow duplicate user', async () => {
@@ -90,7 +95,7 @@ describe('Users', () => {
     it('Should not allow wrong password', async () => {
       res = await request(server)
         .post('/api/users/login')
-        .send({ email: testUser.email, password: '123' })
+        .send({ email: seedUser.email, password: '123' })
         .expect(401)
         .expect('Content-Type', /json/);
 
