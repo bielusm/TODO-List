@@ -8,3 +8,4 @@ server/coverage
 config/default.json
 config/test.json
 mongodb-binaries/
+server/yarn-error.log

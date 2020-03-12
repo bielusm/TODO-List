@@ -1,3 +1,5 @@
 module.exports = {
-  preset: '@shelf/jest-mongodb'
+  testEnvironment: 'node',
+  globalSetup: './setup.js',
+  globalTeardown: './teardown.js'
 };
