@@ -12,8 +12,8 @@ describe('test todos component', () => {
     jest.clearAllMocks();
   });
 
-  it('should call getAllTodos fn', () => {
-    render(<Todos todos={mockTodos} getAllTodos={getAllTodos} />);
+  it('should call getAllTodos fn when todos arent given', () => {
+    render(<Todos getAllTodos={getAllTodos} todos={[]} />);
     expect(getAllTodos).toHaveBeenCalledTimes(1);
   });
 

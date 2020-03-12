@@ -7,10 +7,12 @@ import { connect } from 'react-redux';
 
 export const Todos = ({ getAllTodos, todos }) => {
   useEffect(() => {
-    getAllTodos();
+    if (todos.length === 0) {
+      getAllTodos();
+    }
   }, [getAllTodos]);
 
-  return todos.length === 0 ? (
+  return !todos || todos.length === 0 ? (
     <h3>You don't have any todos yet</h3>
   ) : (
     <>
