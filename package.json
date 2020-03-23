@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "client": "cd client && yarn start",
-    "server": "cd server && yarn server",
-    "dev": "concurrently \"yarn server\" \"yarn client\"",
-    "test": "cd server && yarn test && cd ../client && yarn test"
+    "client": "cd client && npm run start",
+    "server": "cd server && npm run server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "cd server && npm test && cd ../client && npm test"
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
     "jest": "^25.1.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "engines": {
+    "yarn": "YARN NO LONGER USED - use npm instead."
+  }
 }
