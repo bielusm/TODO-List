@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "heroku-prebuild": "export NODE_ENV=development && set cd client && npm install && cd server && npm install",
-    "heroku-postbuild": "export NODE_ENV=production",
-    "build": "cd client && npm run build:prod",
+    "build": "export NODE_ENV=production && cd client && npm run build:prod",
     "start": "cd server && npm run start",
     "client": "cd client && npm run start",
     "server": "cd server && npm run server",
