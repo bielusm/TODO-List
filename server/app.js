@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.static('../client/docs/'));
+
 //Init Middleware
 //Body parser
 app.use(express.json());
