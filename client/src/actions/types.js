@@ -12,3 +12,4 @@ export const REMOVE_TODO = 'REMOVE_TODO';
 export const REMOVE_TODO_BY_ID = 'REMOVE_TODO_BY_ID';
 export const SET_TODO = 'SET_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
+export const ADD_TODO = 'ADD_TODO';

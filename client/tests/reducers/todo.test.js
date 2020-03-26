@@ -3,7 +3,9 @@ import {
   SET_TODOS,
   EDIT_TODO,
   SET_TODO,
-  REMOVE_TODO_BY_ID
+  REMOVE_TODO_BY_ID,
+  REMOVE_TODO,
+  ADD_TODO
 } from '../../src/actions/types';
 import { mockTodos } from '../mocks/todos';
 
@@ -37,7 +39,7 @@ describe('todo reducer tests', () => {
     ).toEqual(mockTodos[0]);
   });
 
-  test('Remove TODO', () => {
+  test('Edit TODO', () => {
     const updates = { name: 'new name', description: 'new description' };
     expect(
       todoReducer(
@@ -49,5 +51,19 @@ describe('todo reducer tests', () => {
         }
       ).todos.filter(todo => todo._id === mockTodos[0]._id)[0]
     ).toEqual(expect.objectContaining({ ...mockTodos[0], ...updates }));
+  });
+
+  test('REMOVE_TODO', () => {
+    expect(
+      todoReducer({ todo: mockTodos[0] }, { type: REMOVE_TODO }).todo
+    ).toEqual(null);
+  });
+
+  test('ADD_TODO', () => {
+    const todos = todoReducer(
+      { todos: [mockTodos[0]] },
+      { type: ADD_TODO, payload: mockTodos[1] }
+    ).todos;
+    expect(todos).toEqual([mockTodos[1], mockTodos[0]]);
   });
 });

@@ -3,7 +3,8 @@ import {
   REMOVE_TODO,
   REMOVE_TODO_BY_ID,
   SET_TODO,
-  EDIT_TODO
+  EDIT_TODO,
+  ADD_TODO
 } from '../actions/types';
 
 export const initialState = {
@@ -45,6 +46,12 @@ const todo = (state = initialState, action) => {
       return {
         ...state,
         todo: payload
+      };
+
+    case ADD_TODO:
+      return {
+        ...state,
+        todos: [payload, ...state.todos]
       };
     default:
       return state;
