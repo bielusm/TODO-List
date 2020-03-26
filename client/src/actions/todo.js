@@ -5,7 +5,8 @@ import {
   REMOVE_TODO,
   SET_TODO,
   REMOVE_TODO_BY_ID,
-  EDIT_TODO
+  EDIT_TODO,
+  ADD_TODO
 } from './types';
 
 export const removeTodo = () => ({
@@ -88,7 +89,12 @@ export const removeTodoByIdAction = id => async (dispatch, getState) => {
   }
 };
 
-export const addTodo = formData => async (dispatch, getState) => {
+export const addTodo = todo => ({
+  type: ADD_TODO,
+  payload: todo
+});
+
+export const addTodoAction = formData => async (dispatch, getState) => {
   try {
     const body = JSON.stringify(formData);
     const config = {
@@ -99,6 +105,7 @@ export const addTodo = formData => async (dispatch, getState) => {
     };
 
     const res = await axios.post('/api/todo', body, config);
+    dispatch(addTodo(formData));
     dispatch(setAlert('Todo added', 'success'));
   } catch (error) {
     if (error.response) {

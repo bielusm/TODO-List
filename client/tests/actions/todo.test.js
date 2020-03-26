@@ -1,4 +1,5 @@
 import {
+  addTodoAction,
   addTodo,
   getAllTodos,
   addTodos,
@@ -51,11 +52,14 @@ describe('Todo action tests', () => {
       });
 
       store
-        .dispatch(addTodo({ name: 'name', description: 'description' }))
+        .dispatch(addTodoAction({ name: 'name', description: 'description' }))
         .then(() => {
           const actions = store.getActions();
-          let expected = addAlert(uuid(), 'Todo added', 'success');
-          expect(actions[0]).toEqual(expected);
+          let expected = [
+            addTodo({ name: 'name', description: 'description' }),
+            addAlert(uuid(), 'Todo added', 'success')
+          ];
+          expect(actions).toEqual(expected);
           done();
         });
     });
@@ -70,7 +74,7 @@ describe('Todo action tests', () => {
       });
 
       store
-        .dispatch(addTodo({ name: 'name', description: 'description' }))
+        .dispatch(addTodoAction({ name: 'name', description: 'description' }))
         .then(() => {
           const actions = store.getActions();
           let expected = addAlert(uuid(), 'Name required', 'danger');

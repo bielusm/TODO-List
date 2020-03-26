@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardBody
 } from 'reactstrap';
-import { addTodo } from '../../actions/todo';
+import { addTodoAction } from '../../actions/todo';
 
 export const AddTodo = ({ addTodo, history }) => {
   const [formData, setFormData] = useState({
@@ -71,4 +71,4 @@ AddTodo.propTypes = {
   addTodo: PropTypes.func.isRequired
 };
 
-export default connect(null, { addTodo })(withRouter(AddTodo));
+export default connect(null, { addTodo: addTodoAction })(withRouter(AddTodo));
