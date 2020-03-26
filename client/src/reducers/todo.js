@@ -51,7 +51,7 @@ const todo = (state = initialState, action) => {
     case ADD_TODO:
       return {
         ...state,
-        todos: [payload, ...state.todos]
+        todos: [...state.todos, payload]
       };
     default:
       return state;

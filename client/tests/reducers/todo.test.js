@@ -64,6 +64,6 @@ describe('todo reducer tests', () => {
       { todos: [mockTodos[0]] },
       { type: ADD_TODO, payload: mockTodos[1] }
     ).todos;
-    expect(todos).toEqual([mockTodos[1], mockTodos[0]]);
+    expect(todos).toEqual([mockTodos[0], mockTodos[1]]);
   });
 });
