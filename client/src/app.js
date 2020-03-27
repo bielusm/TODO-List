@@ -4,20 +4,13 @@ import ReactDOM from 'react-dom';
 import configureStore from './store';
 import { Provider } from 'react-redux';
 
-import TopNav from './components/layout/TopNav';
-import Login from './components/forms/Login';
-import Register from './components/forms/Register';
-import Alerts from './components/layout/Alerts';
-import Dashboard from './components/layout/Dashboard';
-import PrivateRoute from './components/routes/PrivateRoute';
-import AddTodo from './components/forms/AddTodo';
+import Routes from './components/routes/Routes';
+import HomePage from './components/layout/HomePage';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { setToken } from './actions/auth';
-import EditTodo from './components/forms/EditTodo';
 
 const store = configureStore;
 
@@ -27,21 +20,10 @@ if (token) store.dispatch(setToken(token));
 const jsx = (
   <Provider store={store}>
     <Router>
-      <TopNav />
-      <Container className="pt-2">
-        <Alerts />
-        <Switch>
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/register" component={Register} />
-          <PrivateRoute
-            exact
-            path={['/', '/dashboard']}
-            component={Dashboard}
-          />
-          <PrivateRoute exact path="/add-todo" component={AddTodo} />
-          <PrivateRoute exact path="/edit-todo/:todoId" component={EditTodo} />
-        </Switch>
-      </Container>
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route component={Routes} />
+      </Switch>
     </Router>
   </Provider>
 );
