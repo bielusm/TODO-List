@@ -10,6 +10,8 @@ import HomePage from './components/layout/HomePage';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
+import '../docs/assets/styles.css';
+
 import { setToken } from './actions/auth';
 
 const store = configureStore;
