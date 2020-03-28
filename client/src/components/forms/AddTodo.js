@@ -34,8 +34,10 @@ export const AddTodo = ({ addTodo, history }) => {
 
   return (
     <Card>
-      <CardHeader tag="h4">Add Todo</CardHeader>
-      <CardBody>
+      <CardHeader className="notepadTop" tag="h4">
+        Add Todo
+      </CardHeader>
+      <CardBody className="notepadBottom">
         <Form onSubmit={e => onSubmit(e)}>
           <FormGroup>
             <Label for="name">Name</Label>
@@ -46,7 +48,7 @@ export const AddTodo = ({ addTodo, history }) => {
               required
               value={name}
               onChange={e => onChange(e)}
-              className="name"
+              className="name notepadInput"
             ></Input>
           </FormGroup>
           <FormGroup>
@@ -56,11 +58,11 @@ export const AddTodo = ({ addTodo, history }) => {
               type="textarea"
               name="description"
               value={description}
-              className="description"
+              className="description notepadInput"
               onChange={e => onChange(e)}
             ></Input>
           </FormGroup>
-          <Button color="primary">Add Todo</Button>
+          <Button className="notepadBtn">Add Todo</Button>
         </Form>
       </CardBody>
     </Card>

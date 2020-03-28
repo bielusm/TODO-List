@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 
 export const Todo = ({ todo: { name, date, _id }, removeTodoByIdAction }) => {
   return (
-    <tr>
-      <td>{name}</td>
+    <tr className="borderBottom">
+      <td className="todoName">{name}</td>
       <td>
         <Moment format="YYYY/MM/DD">{date}</Moment>
       </td>
@@ -22,7 +22,7 @@ export const Todo = ({ todo: { name, date, _id }, removeTodoByIdAction }) => {
       </td>
       <td>
         <Button color="link" onClick={e => removeTodoByIdAction(_id)}>
-          <i className="fas fa-check fa-lg"></i>
+          <i className="fas fa-check fa-lg checkMark"></i>
         </Button>
       </td>
     </tr>

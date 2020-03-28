@@ -39,8 +39,10 @@ const Register = ({ authenticated, register, setAlert }) => {
   return (
     <>
       <Card>
-        <CardHeader tag="h4">Register</CardHeader>
-        <CardBody>
+        <CardHeader tag="h4" className="notepadTop">
+          Register
+        </CardHeader>
+        <CardBody className="notepadBottom">
           <Form onSubmit={e => onSubmit(e)}>
             <FormGroup>
               <Label for="email">Email</Label>
@@ -50,6 +52,7 @@ const Register = ({ authenticated, register, setAlert }) => {
                 required
                 value={email}
                 onChange={e => onChange(e)}
+                className="notepadInput"
               ></Input>
             </FormGroup>
             <FormGroup>
@@ -60,6 +63,7 @@ const Register = ({ authenticated, register, setAlert }) => {
                 required
                 value={password}
                 onChange={e => onChange(e)}
+                className="notepadInput"
               ></Input>
             </FormGroup>
             <FormGroup>
@@ -70,9 +74,12 @@ const Register = ({ authenticated, register, setAlert }) => {
                 required
                 value={password2}
                 onChange={e => onChange(e)}
+                className="notepadInput"
               ></Input>
             </FormGroup>
-            <Button color="primary">Submit</Button>
+            <Button color="primary" className="notepadBtn">
+              Submit
+            </Button>
           </Form>
         </CardBody>
       </Card>

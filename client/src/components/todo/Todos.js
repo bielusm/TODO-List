@@ -18,7 +18,7 @@ export const Todos = ({ getAllTodos, todos }) => {
     <>
       <h3>My Todos</h3>
       <Table>
-        <thead>
+        <thead className="notepadTop">
           <tr>
             <td>Name</td>
             <td>Date</td>
@@ -26,7 +26,7 @@ export const Todos = ({ getAllTodos, todos }) => {
             <td>Remove</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="notepadBottom todosBody">
           {todos.map((todo, index) => (
             <Todo todo={todo} key={index} />
           ))}

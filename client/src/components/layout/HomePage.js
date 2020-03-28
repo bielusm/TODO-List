@@ -35,20 +35,18 @@ const HomePage = ({ history }) => {
             <Button
               block
               size="lg"
-              className="d-block mx-auto my-2"
+              className="d-block mx-auto my-2 notepadBtn"
               onClick={() => {
                 history.push('/register');
               }}
-              style={{ backgroundColor: '#ff7454', border: '1px grey solid' }}
             >
               Register
             </Button>
             <Button
-              style={{ backgroundColor: '#ff7454', border: '1px grey solid' }}
               block
               size="lg"
               color="primary"
-              className="d-block mx-auto my-2"
+              className="d-block mx-auto my-2 notepadBtn"
               onClick={() => {
                 history.push('/login');
               }}

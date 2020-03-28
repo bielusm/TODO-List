@@ -35,8 +35,10 @@ const Login = ({ authenticated, login }) => {
 
   return (
     <Card>
-      <CardHeader tag="h4">Login</CardHeader>
-      <CardBody>
+      <CardHeader tag="h4" className="notepadTop">
+        Login
+      </CardHeader>
+      <CardBody className="notepadBottom">
         <Form onSubmit={e => onSubmit(e)}>
           <FormGroup>
             <Label for="email">Email</Label>
@@ -46,6 +48,7 @@ const Login = ({ authenticated, login }) => {
               value={email}
               required
               onChange={e => onChange(e)}
+              className="notepadInput"
             ></Input>
           </FormGroup>
           <FormGroup>
@@ -56,9 +59,12 @@ const Login = ({ authenticated, login }) => {
               value={password}
               required
               onChange={e => onChange(e)}
+              className="notepadInput"
             ></Input>
           </FormGroup>
-          <Button color="primary">Submit</Button>
+          <Button color="primary" className="notepadBtn">
+            Submit
+          </Button>
         </Form>
       </CardBody>
     </Card>
