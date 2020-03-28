@@ -24,15 +24,13 @@ const HomePage = ({ history }) => {
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          border: '1px solid black',
-          color: 'white',
-          backgroundColor: '#FEE6CE'
+          border: '1px solid black'
         }}
       >
-        <CardHeader tag="h4" style={{ backgroundColor: '#ff7454' }}>
+        <CardHeader tag="h4" className="notepadTop">
           Welcome to the TODO List
         </CardHeader>
-        <CardBody>
+        <CardBody className="notepadBottom">
           <div className="mx-auto" style={{ width: '40%' }}>
             <Button
               block

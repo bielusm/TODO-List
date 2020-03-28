@@ -1,0 +1,9 @@
+.notepadTop {
+  background-color: #ff7454;
+  color: white;
+  border-bottom: 1px solid black;
+}
+
+.notepadBottom {
+  background-color: #fee6ce;
+}
