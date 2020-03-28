@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { SET_TOKEN, LOGOUT } from './types';
+import { SET_TOKEN, RESET_STATE } from './types';
 
 export const setToken = token => ({ type: SET_TOKEN, payload: token });
 
 export const logout = () => dispatch => {
-  dispatch({ type: LOGOUT });
+  dispatch({ type: RESET_STATE });
   window.localStorage.removeItem('token');
 };
 

@@ -14,7 +14,6 @@ import configureMockStore from 'redux-mock-store';
 import ReduxThunk from 'redux-thunk';
 import moxios from 'moxios';
 import { addAlert } from '../../src/actions/alert';
-const mockStore = configureMockStore([ReduxThunk]);
 import { uuid } from 'uuidv4';
 import { mockTodos } from '../mocks/todos';
 const dummyTodos = [{ name: 'this is a todo', _id: 1 }];
@@ -24,6 +23,7 @@ jest.mock('uuidv4', () => ({
   uuid: jest.fn(() => 1)
 }));
 
+const mockStore = configureMockStore([ReduxThunk]);
 let store;
 beforeEach(() => {
   store = mockStore({

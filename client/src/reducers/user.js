@@ -1,6 +1,6 @@
-import { SET_TOKEN, LOGOUT } from '../actions/types';
+import { SET_TOKEN, RESET_STATE } from '../actions/types';
 
-const initialState = {
+export const initialState = {
   token: null,
   authenticated: false
 };
@@ -14,11 +14,10 @@ const user = (state = initialState, action) => {
         token: payload,
         authenticated: true
       };
-    case LOGOUT:
+    case RESET_STATE:
       return {
         ...state,
-        token: null,
-        authenticated: false
+        ...initialState
       };
     default:
       return state;

@@ -5,7 +5,8 @@ import {
   SET_TODO,
   REMOVE_TODO_BY_ID,
   REMOVE_TODO,
-  ADD_TODO
+  ADD_TODO,
+  RESET_STATE
 } from '../../src/actions/types';
 import { mockTodos } from '../mocks/todos';
 
@@ -65,5 +66,14 @@ describe('todo reducer tests', () => {
       { type: ADD_TODO, payload: mockTodos[1] }
     ).todos;
     expect(todos).toEqual([mockTodos[0], mockTodos[1]]);
+  });
+
+  test('RESET_STATE', () => {
+    expect(
+      todoReducer(
+        { todos: [mockTodos], todo: mockTodos[0] },
+        { type: RESET_STATE }
+      )
+    ).toEqual(initialState);
   });
 });

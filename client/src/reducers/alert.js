@@ -1,6 +1,6 @@
-import { ADD_ALERT, REMOVE_ALERT } from '../actions/types';
+import { ADD_ALERT, REMOVE_ALERT, RESET_STATE } from '../actions/types';
 
-const initialState = {
+export const initialState = {
   alerts: []
 };
 
@@ -13,6 +13,12 @@ const alert = (state = initialState, action) => {
       return {
         ...state,
         alerts: state.alerts.filter(alert => alert.id !== payload)
+      };
+
+    case RESET_STATE:
+      return {
+        ...state,
+        ...initialState
       };
     default:
       return state;
