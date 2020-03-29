@@ -5,12 +5,14 @@ import {
   SET_TODO,
   EDIT_TODO,
   ADD_TODO,
-  RESET_STATE
+  RESET_STATE,
+  SET_TODO_LOADING
 } from '../actions/types';
 
 export const initialState = {
   todos: [],
-  todo: null
+  todo: null,
+  loading: false
 };
 
 const todo = (state = initialState, action) => {
@@ -52,13 +54,21 @@ const todo = (state = initialState, action) => {
     case ADD_TODO:
       return {
         ...state,
-        todos: [...state.todos, payload]
+        todos: [...state.todos, payload],
+        loading: false
       };
     case RESET_STATE:
       return {
         ...state,
         ...initialState
       };
+
+    case SET_TODO_LOADING: {
+      return {
+        ...state,
+        loading: true
+      };
+    }
 
     default:
       return state;

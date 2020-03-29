@@ -6,7 +6,8 @@ import {
   REMOVE_TODO_BY_ID,
   REMOVE_TODO,
   ADD_TODO,
-  RESET_STATE
+  RESET_STATE,
+  SET_TODO_LOADING
 } from '../../src/actions/types';
 import { mockTodos } from '../mocks/todos';
 
@@ -21,7 +22,7 @@ describe('todo reducer tests', () => {
         type: SET_TODOS,
         payload: mockTodos
       })
-    ).toEqual({ todo: null, todos: mockTodos });
+    ).toEqual({ todo: null, todos: mockTodos, loading: false });
   });
 
   test('REMOVE_TODO_BY_ID', () => {
@@ -61,11 +62,12 @@ describe('todo reducer tests', () => {
   });
 
   test('ADD_TODO', () => {
-    const todos = todoReducer(
-      { todos: [mockTodos[0]] },
+    const result = todoReducer(
+      { todos: [mockTodos[0]], loading: true },
       { type: ADD_TODO, payload: mockTodos[1] }
-    ).todos;
-    expect(todos).toEqual([mockTodos[0], mockTodos[1]]);
+    );
+    expect(result.todos).toEqual([mockTodos[0], mockTodos[1]]);
+    expect(result.loading).toEqual(false);
   });
 
   test('RESET_STATE', () => {
@@ -75,5 +77,11 @@ describe('todo reducer tests', () => {
         { type: RESET_STATE }
       )
     ).toEqual(initialState);
+  });
+
+  test('SET_TODO_LOADING', () => {
+    expect(todoReducer(undefined, { type: SET_TODO_LOADING }).loading).toEqual(
+      true
+    );
   });
 });
