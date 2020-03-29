@@ -16,6 +16,7 @@ import moxios from 'moxios';
 import { addAlert } from '../../src/actions/alert';
 import { uuid } from 'uuidv4';
 import { mockTodos } from '../mocks/todos';
+import { SET_TODO_LOADING } from '../../src/actions/types';
 const dummyTodos = [{ name: 'this is a todo', _id: 1 }];
 
 jest.mock('uuidv4', () => ({
@@ -48,7 +49,10 @@ describe('Todo action tests', () => {
           'x-auth-token': '12345',
           'Content-Type': 'application/json'
         });
-        request.respondWith({ status: 200, responseText: 'Todo added' });
+        request.respondWith({
+          status: 200,
+          response: { name: 'todo 1', description: 'todo description', id: 1 }
+        });
       });
 
       store
@@ -56,7 +60,8 @@ describe('Todo action tests', () => {
         .then(() => {
           const actions = store.getActions();
           let expected = [
-            addTodo({ name: 'name', description: 'description' }),
+            { type: 'SET_TODO_LOADING' },
+            addTodo({ name: 'todo 1', description: 'todo description', id: 1 }),
             addAlert(uuid(), 'Todo added', 'success')
           ];
           expect(actions).toEqual(expected);
@@ -77,8 +82,11 @@ describe('Todo action tests', () => {
         .dispatch(addTodoAction({ name: 'name', description: 'description' }))
         .then(() => {
           const actions = store.getActions();
-          let expected = addAlert(uuid(), 'Name required', 'danger');
-          expect(actions[0]).toEqual(expected);
+          let expected = [
+            { type: SET_TODO_LOADING },
+            addAlert(uuid(), 'Name required', 'danger')
+          ];
+          expect(actions).toEqual(expected);
           done();
         });
     });

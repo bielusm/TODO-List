@@ -6,7 +6,8 @@ import {
   SET_TODO,
   REMOVE_TODO_BY_ID,
   EDIT_TODO,
-  ADD_TODO
+  ADD_TODO,
+  SET_TODO_LOADING
 } from './types';
 
 export const removeTodo = () => ({
@@ -103,8 +104,9 @@ export const addTodoAction = formData => async (dispatch, getState) => {
         'x-auth-token': getState().user.token
       }
     };
-    dispatch(addTodo(formData));
+    dispatch({ type: SET_TODO_LOADING });
     const res = await axios.post('/api/todo', body, config);
+    dispatch(addTodo(res.data));
     dispatch(setAlert('Todo added', 'success'));
   } catch (error) {
     if (error.response) {
