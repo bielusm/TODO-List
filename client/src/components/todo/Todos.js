@@ -5,9 +5,9 @@ import { getAllTodos } from '../../actions/todo';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-export const Todos = ({ getAllTodos, todos }) => {
+export const Todos = ({ getAllTodos, todos, loading }) => {
   useEffect(() => {
-    if (todos.length === 0) {
+    if (todos.length === 0 && !loading) {
       const getTodos = async () => {
         await getAllTodos();
       };
@@ -40,12 +40,14 @@ export const Todos = ({ getAllTodos, todos }) => {
 };
 
 const mapStateToProps = state => ({
-  todos: state.todo.todos
+  todos: state.todo.todos,
+  loading: state.todo.loading
 });
 
 Todos.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.object).isRequired,
-  getAllTodos: PropTypes.func.isRequired
+  getAllTodos: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default connect(mapStateToProps, { getAllTodos })(Todos);
