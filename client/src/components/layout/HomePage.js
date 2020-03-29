@@ -1,8 +1,12 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, Button } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const HomePage = ({ history }) => {
+const HomePage = ({ history, authenticated }) => {
+  if (authenticated) return <Redirect to="/dashboard" />;
+
   return (
     <>
       <div
@@ -60,4 +64,12 @@ const HomePage = ({ history }) => {
   );
 };
 
-export default HomePage;
+const mapStateToProps = state => ({
+  authenticated: state.user.authenticated
+});
+
+HomePage.propTypes = {
+  authenticated: PropTypes.bool.isRequired
+};
+
+export default connect(mapStateToProps)(HomePage);
