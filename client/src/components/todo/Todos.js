@@ -8,9 +8,12 @@ import { connect } from 'react-redux';
 export const Todos = ({ getAllTodos, todos }) => {
   useEffect(() => {
     if (todos.length === 0) {
-      getAllTodos();
+      const getTodos = async () => {
+        await getAllTodos();
+      };
+      getTodos();
     }
-  }, [getAllTodos]);
+  }, []);
 
   return !todos || todos.length === 0 ? (
     <h3>You don't have any todos yet</h3>

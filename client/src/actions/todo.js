@@ -103,9 +103,8 @@ export const addTodoAction = formData => async (dispatch, getState) => {
         'x-auth-token': getState().user.token
       }
     };
-
-    const res = await axios.post('/api/todo', body, config);
     dispatch(addTodo(formData));
+    const res = await axios.post('/api/todo', body, config);
     dispatch(setAlert('Todo added', 'success'));
   } catch (error) {
     if (error.response) {
