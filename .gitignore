@@ -8,3 +8,6 @@ server/coverage
 config/default.json
 config/test.json
 mongodb-binaries/
+
+# Local Netlify folder
+.netlify
